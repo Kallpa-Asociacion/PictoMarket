@@ -29,7 +29,9 @@ npm run preview     # Previsualización del build en http://127.0.0.1:4173
 
 Implementación con componentes React basada en **`img/ui.png`**, usando **`img/fondo.png`** y recortes de su arte:
 
-- Cabecera PictoMarket, objetivo pictográfico y logotipo de la referencia.
+- Pantalla de bienvenida anterior al juego, inspirada en la referencia de inicio: cartel, toldo, guía, carrito y botón amarillo **Empezar**.
+- Acceso al panel del terapeuta desde la bienvenida para configurar el escenario sin iniciar la compra.
+- Cabecera PictoMarket, objetivo pictográfico durante la compra y logotipo de la referencia.
 - Guía sobre un letrero de madera, con instrucción real y botón para escuchar.
 - Toldo, estantes y tarjetas de producto accesibles con precio en monedas.
 - Lista de compras con producto actual, marcas de comprado y progreso real.
@@ -96,7 +98,7 @@ El frontend sigue siendo autónomo. La extracción del dominio facilita una inte
 | `desayuno_saludable` | 1     | Leche, pan, manzana                     | 6           |
 | `almuerzo_casa`      | 2     | Pechuga de pollo, papa, tomate, lechuga | 8           |
 
-Al abrir se presenta el almuerzo para corresponder al objetivo de la referencia. Ambos retos se pueden seleccionar desde el panel del terapeuta.
+Al abrir se presenta la bienvenida. **Empezar** inicia el almuerzo por defecto, o el reto elegido previamente en el panel del terapeuta. La espera en la bienvenida no cuenta en el tiempo del primer evento: se crea una actividad limpia al empezar. El foco pasa a los productos, sin activar voz automáticamente. Recargar vuelve a la bienvenida; no se persiste el progreso.
 
 | Acción | Condición                                        | Resultado                                         |
 | ------ | ------------------------------------------------ | ------------------------------------------------- |
@@ -135,14 +137,14 @@ El progreso y los eventos viven solo en la memoria de la pestaña: **reiniciar, 
 ## Pruebas
 
 ```bash
-npm test               # 18 pruebas de dominio/React + 17 del controlador de voz
+npm test               # 21 pruebas de dominio/React + 17 del controlador de voz
 npm run typecheck
 npm run build
-npm run test:e2e        # 7 pruebas con Chrome instalado
+npm run test:e2e        # 10 pruebas con Chrome instalado
 npm audit
 ```
 
-Las pruebas de navegador revisan anchos **360, 390, 720, 768, 1024 y 1440 px**, carga de imágenes, ausencia de desbordamiento horizontal, separación entre imagen y nombre, errores de ejecución, diálogo y Escape. También ejercitan pistas, compra completa, exportación, cambio de reto y reinicio. Las capturas se guardan en `codigo/frontend/artifacts/`, ignorado por Git. Los resultados de Playwright van a `codigo/frontend/test-results/`. Ninguna prueba ni salida del frontend se crea en la raíz del repositorio.
+Las pruebas de navegador revisan bienvenida y mercado en anchos **320, 360, 390, 720, 768, 1024, 1440 y 1590 px**, carga de imágenes, ausencia de desbordamiento horizontal, separación entre imagen y nombre, errores de ejecución, diálogo y Escape. También ejercitan configuración previa, inicio con Enter, foco, vuelta a bienvenida al recargar, pistas, compra completa, exportación, cambio de reto y reinicio. Las pruebas React verifican que el tiempo del primer evento no incluya la espera en bienvenida. Las capturas se guardan en `codigo/frontend/artifacts/`, ignorado por Git. Los resultados de Playwright van a `codigo/frontend/test-results/`. Ninguna prueba ni salida del frontend se crea en la raíz del repositorio.
 
 Si usas Edge en lugar de Chrome:
 

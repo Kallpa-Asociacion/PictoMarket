@@ -12,6 +12,18 @@ Los originales están en `img/`, en la raíz del repositorio:
 | `art/guide.webp`  | `img/ui.png`    | Recorte decorativo del rostro del guía                          |
 | `art/kallpa.webp` | `img/ui.png`    | Recorte del logotipo y eliminación del fondo conectado al borde |
 
+La bienvenida también usa estos recursos decorativos locales:
+
+| Recurso público           | Fuente                                   | Transformación                                                                |
+| ------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `art/welcome-market.webp` | `img/fondo.png`                          | Plaza recompuesta con el lateral derecho y su reflejo, sin duplicar el puesto |
+| `art/welcome-awning.webp` | `img/fondo.png`                          | Recorte del toldo con máscara transparente                                    |
+| `art/welcome-guide.webp`  | `img/ui.png`                             | Silueta del guía con máscara trazada, sin textos ni controles                 |
+| `art/welcome-basket.svg`  | Dibujo vectorial creado para el frontend | Carrito y alimentos decorativos                                               |
+| `art/welcome-crate.svg`   | Dibujo vectorial creado para el frontend | Cajón y alimentos decorativos                                                 |
+
+La imagen de inicio adjunta en la conversación inspira la composición; no está incluida como una captura de pantalla ni se usa como interfaz. El arte se adapta a los originales disponibles y a estos SVG. Las ilustraciones de alimentos de bienvenida **no sustituyen los pictogramas ARASAAC del juego**.
+
 `img/ui.png` sirve como referencia visual; no se renderiza como pantalla, ni contiene los controles activos. Todos los textos, tarjetas, precios, botones y estados de la aplicación se crean con React.
 
 Los recortes se pueden reproducir con `scripts/prepare-art.py`. **No se dispone de información de licencia de las imágenes suministradas ni de autorización de uso de la marca Kallpa.** Su presencia reproduce la referencia solicitada; no afirma patrocinio ni afiliación. Validar permisos antes de publicar o redistribuir estos recursos.

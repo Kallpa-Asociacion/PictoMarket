@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" fill="none">
+  <defs>
+    <linearGradient id="carrot" x2="1" y2="1"><stop stop-color="#ffc247"/><stop offset="1" stop-color="#ef701d"/></linearGradient>
+    <linearGradient id="tomato" x2="0" y2="1"><stop stop-color="#ff6840"/><stop offset="1" stop-color="#d83224"/></linearGradient>
+    <linearGradient id="basket" x2="0" y2="1"><stop stop-color="#f1f4e9"/><stop offset="1" stop-color="#9baec2"/></linearGradient>
+  </defs>
+  <g stroke="#344122" stroke-width="3.5" stroke-linejoin="round">
+    <path d="M167 149c-45-4-57-38-40-47-16-20 2-45 21-37-4-29 27-35 40-16 12-24 41-16 42 8 27-5 40 26 21 41 22 22-5 48-31 44Z" fill="#6aaf35"/>
+    <path d="M188 139c-17-20-17-49-7-76m14 46 23-33m-43 31-27-19" stroke="#387c2c"/>
+    <path d="M109 151C90 128 57 62 69 48c23-24 56 43 64 84Z" fill="url(#carrot)"/>
+    <path d="m77 73 15-5m-3 27 14-5m-1 25 13-4" stroke="#d77a1d"/>
+    <path d="M74 50C41 48 38 29 51 26c14-2 22 8 23 24-5-29 1-46 14-40 12 7 2 25-14 40 20-22 37-17 31-5-7 10-17 10-31 5Z" fill="#5f9d30"/>
+    <path d="M138 151c-6-28-17-92 3-96 23-3 26 58 22 94Z" fill="url(#carrot)"/>
+    <path d="m139 78 13-2m-12 24 13-2m-9 24 11-2" stroke="#d77a1d"/>
+    <path d="M145 58c-23-10-28-26-17-31 13-5 19 17 17 31 3-30 18-43 25-31 5 11-10 24-25 31Z" fill="#74ad35"/>
+    <path d="M215 143c-4-27 3-55 21-63 21-10 42 1 41 21-1 24-26 48-44 50Z" fill="#ffbc36"/>
+    <path d="m241 82 7-14" stroke="#39842d" stroke-width="6"/>
+    <path d="M182 157c-22-9-27-36-12-48 11-8 21-6 29-1 14-11 30-6 34 7 8 25-20 48-51 42Z" fill="url(#tomato)"/>
+    <path d="m198 111-14-6 14-5 8-14 1 14 15 1-15 11Z" fill="#489936"/>
+    <path d="M244 165c-19-12-22-30-11-41 9-8 21-6 28-1 18-7 33 6 27 22-5 16-25 27-44 20Z" fill="url(#tomato)"/>
+    <path d="m257 126-12-8 14 1 9-9-3 14 11 3-14 4Z" fill="#489936"/>
+  </g>
+  <g stroke="#273d50" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m47 119 15 15 23 92h190"/>
+    <path d="m22 112 26 7" stroke="#ba3532" stroke-width="13"/>
+    <path d="m66 143 222-4-22 72H82Z" fill="url(#basket)" fill-opacity=".42"/>
+    <path d="m105 145 8 65m35-66 4 65m40-66-1 65m43-66-8 65M76 165h205M80 188h194" stroke="#f7f3dc" stroke-width="5"/>
+    <path d="m66 143 222-4-22 72H82Z"/>
+    <circle cx="103" cy="241" r="11" fill="#35465b"/>
+    <circle cx="258" cy="241" r="11" fill="#35465b"/>
+  </g>
+  <g stroke="#efa121" stroke-width="6" stroke-linecap="round"><path d="m27 72-10-9m258-22 8-12m11 52 12-4"/></g>
+</svg>

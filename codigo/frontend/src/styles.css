@@ -1593,6 +1593,20 @@ svg {
     font-size: 9px;
   }
 }
+@media (max-width: 360px) {
+  .objective {
+    gap: 4px;
+  }
+  .objective-chip {
+    padding: 7px;
+    font-size: 10px;
+    gap: 4px;
+  }
+  .objective-chip svg {
+    width: 18px;
+    height: 18px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

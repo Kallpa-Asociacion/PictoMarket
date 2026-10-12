@@ -1,0 +1,567 @@
+.welcome-screen {
+  min-height: 100svh;
+  position: relative;
+  isolation: isolate;
+  padding: 14px 0 24px;
+  color: #4c240f;
+}
+.welcome-screen::before {
+  content: '';
+  position: fixed;
+  inset: -8px;
+  z-index: -1;
+  background: url('/art/welcome-market.webp') center / cover no-repeat;
+  filter: blur(3px);
+  pointer-events: none;
+}
+.welcome-shell {
+  width: min(1440px, calc(100% - 40px));
+  margin: auto;
+}
+.welcome-screen .topbar {
+  width: min(1260px, 100%);
+  margin: 0 auto 46px;
+  border-radius: 26px;
+  padding: 15px 48px;
+  background: #fffef8f5;
+  box-shadow: 0 7px 20px #2d563626;
+}
+.welcome-screen .brand {
+  color: #142d4b;
+  font-size: clamp(24px, 2.8vw, 39px);
+}
+.welcome-screen .partner-logo {
+  width: 184px;
+}
+.welcome-main {
+  outline: none;
+}
+.welcome-scene {
+  position: relative;
+  width: min(1300px, 100%);
+  margin: auto;
+}
+.welcome-stall {
+  position: relative;
+  width: 80%;
+  padding-top: clamp(98px, 10vw, 152px);
+  margin: auto;
+  filter: drop-shadow(0 12px 8px #4c2b1b36);
+}
+.welcome-awning {
+  position: absolute;
+  inset: 0 auto auto -2%;
+  z-index: 4;
+  width: 104%;
+  max-width: none;
+  height: clamp(118px, 12vw, 177px);
+  object-fit: fill;
+  filter: drop-shadow(0 5px 2px #67391c55);
+  pointer-events: none;
+}
+.welcome-post {
+  position: absolute;
+  top: 85px;
+  bottom: 25px;
+  z-index: 2;
+  width: 34px;
+  border: 4px solid #9f5b25;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #b47331, #e9ac59 40%, #ab612b 90%);
+  box-shadow:
+    inset 3px 0 0 #ffd29388,
+    4px 0 5px #542b1d44;
+}
+.left-post {
+  left: 4%;
+}
+.right-post {
+  right: 4%;
+}
+.welcome-paper {
+  position: relative;
+  height: clamp(330px, 25vw, 370px);
+  margin: 0 6%;
+  overflow: hidden;
+  border: 13px solid #aa662f;
+  border-radius: 15px 15px 4px 4px;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    #fff4da,
+    #ffe6b6 75%,
+    #eac08b
+  );
+  box-shadow:
+    inset 0 0 0 3px #f8c77c,
+    inset 0 0 36px #ae672732;
+}
+.welcome-paper h1 {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px 8px 0;
+  font-weight: 1000;
+  line-height: 1.08;
+  letter-spacing: -1.4px;
+}
+.welcome-greeting {
+  display: block;
+  font-size: clamp(35px, 4.4vw, 65px);
+  margin-bottom: 10px;
+  text-shadow: 0 2px 0 #fff5;
+}
+.welcome-title {
+  display: block;
+  color: #15344e;
+  font-size: clamp(42px, 5vw, 75px);
+  letter-spacing: -2px;
+  text-shadow: 0 3px 0 #fff5;
+}
+.welcome-title > span {
+  color: #ee4c22;
+}
+.welcome-title > b {
+  color: #138f70;
+}
+.welcome-illustration {
+  position: absolute;
+  bottom: -12px;
+  inset-inline: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  height: 46%;
+  pointer-events: none;
+}
+.welcome-guide {
+  width: 31%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  filter: drop-shadow(0 3px 0 #804b2522);
+}
+.welcome-basket {
+  width: 29%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.welcome-lights {
+  position: absolute;
+  top: clamp(114px, 11.5vw, 170px);
+  inset-inline: 9%;
+  height: 28px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-top: 3px solid #463326;
+  border-radius: 50%;
+  z-index: 5;
+  pointer-events: none;
+}
+.welcome-lights > span {
+  width: 16px;
+  height: 22px;
+  margin-top: -3px;
+  border-radius: 45% 45% 50% 50%;
+  border: 2px solid #e8a430;
+  background: #fffbd0;
+  box-shadow:
+    0 0 7px 4px #ffd45899,
+    0 0 24px 9px #ffc74666;
+}
+.welcome-lights > span:nth-child(even) {
+  margin-top: 7px;
+}
+.welcome-counter {
+  position: relative;
+  z-index: 3;
+  min-height: 194px;
+  margin: -4px 2% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px 20px 32px;
+  border: 7px solid #995321;
+  border-top: 23px solid #d9954c;
+  border-radius: 6px 6px 12px 12px;
+  background:
+    linear-gradient(180deg, #68301840, transparent 30%, #71391530),
+    repeating-linear-gradient(
+      90deg,
+      #b66d35 0,
+      #c57b3c 5px,
+      #cc8647 46px,
+      #9d562a 48px,
+      #a05a2b 51px
+    );
+  box-shadow:
+    inset 0 4px 0 #7d4228,
+    0 6px 0 #e7ab66;
+}
+.welcome-counter::before {
+  content: '';
+  position: absolute;
+  top: -24px;
+  left: -15px;
+  right: -15px;
+  height: 25px;
+  border-radius: 5px;
+  background: linear-gradient(#f3b96b, #d58d42 45%, #b37031);
+  box-shadow:
+    inset 0 3px 0 #ffce86,
+    0 4px 4px #66331155;
+}
+.start-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  min-height: 106px;
+  width: min(470px, 75%);
+  border: 5px solid #ffd263;
+  border-radius: 49px;
+  color: #502507;
+  background: linear-gradient(180deg, #ffe77a, #ffd14c 50%, #ffb337);
+  box-shadow:
+    inset 0 3px 0 #fff4b0,
+    inset 0 -4px 0 #fca02c,
+    0 7px 0 #bf6620,
+    0 10px 10px #60341a55;
+  font-size: clamp(30px, 3.4vw, 47px);
+  font-weight: 1000;
+  line-height: 1;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.start-button::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 18px;
+  width: 27px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff9c6;
+  transform: rotate(-35deg);
+}
+.start-button > svg {
+  width: 43px;
+  height: 43px;
+  stroke-width: 4;
+}
+.start-button:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(#fff09a, #ffd356 55%, #ffbc40);
+}
+.start-button:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 3px 0 #fff4b0,
+    0 3px 0 #bf6620;
+}
+.welcome-chalkboard {
+  position: absolute;
+  z-index: 3;
+  width: 154px;
+  padding: 17px 9px 12px;
+  border: 10px solid #d59650;
+  border-radius: 5px;
+  background: linear-gradient(110deg, #363c40, #252c32);
+  box-shadow:
+    inset 0 0 0 2px #efb468,
+    4px 7px 0 #8c4e2666;
+  color: #fff9e8;
+  font-size: 25px;
+  text-align: center;
+  line-height: 1.35;
+  letter-spacing: -0.5px;
+}
+.welcome-chalkboard > span {
+  display: block;
+}
+.welcome-chalkboard > svg {
+  width: 29px;
+  height: 29px;
+  margin-top: 9px;
+  stroke-width: 1.6;
+}
+.learn-board {
+  left: 0;
+  top: 47%;
+  transform: rotate(-6deg);
+}
+.explore-board {
+  right: 0;
+  bottom: 22px;
+  transform: rotate(-5deg);
+}
+.welcome-crate {
+  position: absolute;
+  bottom: -22px;
+  z-index: 4;
+  width: 23%;
+  pointer-events: none;
+  filter: drop-shadow(0 7px 5px #5d341c44);
+}
+.left-crate {
+  left: -1%;
+  transform: rotate(-4deg);
+}
+.right-crate {
+  right: 7%;
+  width: 20%;
+  transform: rotate(3deg);
+}
+.welcome-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 34px;
+}
+.welcome-screen .welcome-therapist {
+  font-size: 18px;
+  min-height: 78px;
+  gap: 12px;
+  padding: 9px 18px 9px 10px;
+  min-width: 326px;
+  border: 5px solid #fffaf4;
+  outline: 2px solid #c5a4fa;
+  border-radius: 45px;
+  background: linear-gradient(120deg, #edddff, #dfccfa);
+  box-shadow:
+    inset 0 0 0 2px #c6a6f9,
+    0 5px 10px #50307133;
+}
+.welcome-screen .welcome-therapist:focus-visible {
+  outline: 4px solid #2457af;
+}
+@media (max-width: 1000px) {
+  .welcome-shell {
+    width: calc(100% - 32px);
+  }
+  .welcome-screen .topbar {
+    margin-bottom: 32px;
+    padding-inline: 26px;
+    flex-wrap: nowrap;
+  }
+  .welcome-stall {
+    width: 86%;
+  }
+  .welcome-paper {
+    height: 340px;
+  }
+  .welcome-greeting {
+    font-size: 43px;
+  }
+  .welcome-title {
+    font-size: 53px;
+  }
+  .welcome-chalkboard {
+    width: 112px;
+    font-size: 18px;
+    border-width: 7px;
+  }
+  .welcome-counter {
+    min-height: 165px;
+  }
+  .start-button {
+    min-height: 90px;
+    width: 64%;
+    font-size: 36px;
+  }
+  .welcome-post {
+    width: 26px;
+  }
+  .welcome-crate {
+    width: 18%;
+  }
+  .right-crate {
+    right: 0;
+  }
+}
+@media (max-width: 720px) {
+  .welcome-screen {
+    padding-top: 12px;
+    padding-bottom: 22px;
+  }
+  .welcome-shell {
+    width: calc(100% - 24px);
+  }
+  .welcome-screen .topbar {
+    min-height: 74px;
+    border-radius: 20px;
+    padding: 12px 16px;
+    margin-bottom: 30px;
+    gap: 8px;
+  }
+  .welcome-screen .partner-logo {
+    width: 112px;
+  }
+  .welcome-screen .brand {
+    font-size: 28px;
+  }
+  .welcome-stall {
+    width: 100%;
+    padding-top: 94px;
+  }
+  .welcome-awning {
+    left: 0;
+    width: 100%;
+    height: 115px;
+  }
+  .welcome-lights {
+    top: 106px;
+    inset-inline: 10%;
+  }
+  .welcome-lights > span {
+    width: 12px;
+    height: 17px;
+  }
+  .welcome-post {
+    top: 80px;
+    bottom: 12px;
+    width: 22px;
+  }
+  .welcome-paper {
+    margin-inline: 6%;
+    height: 340px;
+    border-width: 9px;
+  }
+  .welcome-paper h1 {
+    padding-top: 36px;
+  }
+  .welcome-greeting {
+    font-size: clamp(30px, 6.3vw, 43px);
+    letter-spacing: -0.8px;
+  }
+  .welcome-title {
+    font-size: clamp(34px, 7.4vw, 53px);
+    letter-spacing: -1.5px;
+  }
+  .welcome-illustration {
+    height: 53%;
+    gap: 6px;
+  }
+  .welcome-guide {
+    width: 40%;
+  }
+  .welcome-basket {
+    width: 39%;
+  }
+  .welcome-counter {
+    min-height: 153px;
+    padding: 21px 12px 28px;
+    border-top-width: 18px;
+    margin-inline: 3%;
+  }
+  .welcome-counter::before {
+    top: -19px;
+    left: -10px;
+    right: -10px;
+    height: 21px;
+  }
+  .start-button {
+    width: 78%;
+    min-height: 88px;
+    font-size: 35px;
+    gap: 10px;
+  }
+  .start-button > svg {
+    width: 34px;
+    height: 34px;
+  }
+  .welcome-chalkboard {
+    display: none;
+  }
+  .welcome-crate {
+    width: 22%;
+    bottom: -14px;
+  }
+  .left-crate {
+    left: -2%;
+  }
+  .right-crate {
+    right: -1%;
+  }
+  .welcome-footer {
+    margin-top: 34px;
+    justify-content: center;
+  }
+  .welcome-screen .welcome-therapist {
+    min-width: 0;
+    width: min(340px, 100%);
+    min-height: 72px;
+    font-size: 16px;
+  }
+}
+@media (max-width: 440px) {
+  .welcome-shell {
+    width: calc(100% - 18px);
+  }
+  .welcome-screen .topbar {
+    padding-inline: 10px;
+    min-height: 67px;
+    margin-bottom: 24px;
+  }
+  .welcome-screen .brand {
+    font-size: 22px;
+    letter-spacing: -1px;
+    gap: 3px;
+  }
+  .welcome-screen .partner-logo {
+    width: 82px;
+  }
+  .welcome-stall {
+    padding-top: 76px;
+  }
+  .welcome-awning {
+    height: 95px;
+  }
+  .welcome-lights {
+    top: 88px;
+  }
+  .welcome-post {
+    top: 65px;
+    width: 18px;
+  }
+  .welcome-paper {
+    height: 292px;
+    border-width: 7px;
+  }
+  .welcome-paper h1 {
+    padding: 36px 3px 0;
+  }
+  .welcome-greeting {
+    font-size: clamp(25px, 7.4vw, 32px);
+    margin-bottom: 12px;
+  }
+  .welcome-title {
+    font-size: clamp(29px, 8.4vw, 37px);
+  }
+  .welcome-illustration {
+    height: 49%;
+    bottom: -5px;
+  }
+  .welcome-guide {
+    width: 46%;
+  }
+  .welcome-basket {
+    width: 44%;
+  }
+  .welcome-counter {
+    min-height: 140px;
+    padding-inline: 8px;
+  }
+  .start-button {
+    min-height: 78px;
+    font-size: 30px;
+    width: 83%;
+    border-radius: 35px;
+  }
+  .start-button > svg {
+    width: 29px;
+    height: 29px;
+  }
+}

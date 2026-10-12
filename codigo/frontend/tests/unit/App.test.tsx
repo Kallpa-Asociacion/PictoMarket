@@ -25,19 +25,79 @@ beforeEach(() => {
   synth = fakeSpeech();
   vi.stubGlobal('speechSynthesis', synth);
   vi.stubGlobal('SpeechSynthesisUtterance', FakeUtterance);
+  vi.stubGlobal('scrollTo', vi.fn());
 });
-function mount() {
-  return render(
+function mount(started = true) {
+  const view = render(
     <StrictMode>
       <App />
     </StrictMode>,
   );
+  if (started) fireEvent.click(screen.getByRole('button', { name: 'EMPEZAR' }));
+  return view;
 }
 function buy(name: string) {
   fireEvent.click(
     screen.getByRole('button', { name: new RegExp(`^${name},`) }),
   );
 }
+
+describe('pantalla de bienvenida', () => {
+  it('espera a Empezar sin mostrar productos ni controles de voz', () => {
+    mount(false);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      '¡Bienvenidos a',
+    );
+    expect(screen.getByRole('button', { name: 'EMPEZAR' })).toBeEnabled();
+    expect(document.querySelectorAll('[data-product-id]')).toHaveLength(0);
+    expect(
+      screen.queryByRole('button', { name: 'Activar voz' }),
+    ).not.toBeInTheDocument();
+    expect(synth.speak).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'EMPEZAR' }));
+    expect(
+      screen.queryByRole('button', { name: 'EMPEZAR' }),
+    ).not.toBeInTheDocument();
+    expect(document.getElementById('mercado')).toHaveFocus();
+    expect(document.querySelectorAll('[data-product-id]')).toHaveLength(10);
+    expect(synth.speak).not.toHaveBeenCalled();
+  });
+  it('configura el escenario desde inicio y lo conserva al empezar', () => {
+    mount(false);
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Panel del terapeuta' }),
+    );
+    const dialog = screen.getByRole('dialog');
+    fireEvent.change(within(dialog).getByLabelText('Escenario de compra'), {
+      target: { value: '0' },
+    });
+    fireEvent.click(
+      within(dialog).getByRole('button', {
+        name: 'Cerrar panel del terapeuta',
+      }),
+    );
+    expect(screen.getByRole('button', { name: 'EMPEZAR' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'EMPEZAR' }));
+    expect(screen.getByText('DESAYUNO')).toBeInTheDocument();
+    expect(screen.getByText(/Tengo/)).toHaveTextContent('Tengo 6 de 6 monedas');
+  });
+  it('no incluye el tiempo de bienvenida en el primer evento de compra', () => {
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(1000);
+    try {
+      mount(false);
+      clock.mockReturnValue(50000);
+      fireEvent.click(screen.getByRole('button', { name: 'EMPEZAR' }));
+      clock.mockReturnValue(50150);
+      buy('PECHUGA DE POLLO');
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Panel del terapeuta' }),
+      );
+      expect(screen.getByRole('dialog')).toHaveTextContent('"t_ms": 150');
+    } finally {
+      clock.mockRestore();
+    }
+  });
+});
 
 describe('frontend React y apoyo de voz', () => {
   it('presenta almuerzo, todos los productos y saldo real sin autoplay', () => {
