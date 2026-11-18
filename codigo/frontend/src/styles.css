@@ -225,28 +225,6 @@ svg {
 .instruction-board::after {
   right: 6px;
 }
-.guide-portrait {
-  width: 106px;
-  height: 100px;
-  flex: 0 0 106px;
-  border-radius: 54% 54% 18% 18%;
-  position: relative;
-  align-self: flex-end;
-  overflow: hidden;
-  margin-top: -16px;
-  filter: drop-shadow(0 3px 2px #59302033);
-}
-.guide-portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.guide-portrait > span {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  font-size: 26px;
-}
 .instruction-paper {
   display: flex;
   align-items: center;
@@ -1133,11 +1111,6 @@ svg {
     padding: 9px;
     gap: 8px;
   }
-  .guide-portrait {
-    width: 80px;
-    flex-basis: 80px;
-    height: 88px;
-  }
   .instruction-paper {
     padding: 12px 11px;
     gap: 8px;
@@ -1206,9 +1179,6 @@ svg {
   .market-layout {
     grid-template-columns: minmax(0, 1fr) 255px;
     gap: 16px;
-  }
-  .guide-portrait {
-    display: none;
   }
   .instruction-text {
     font-size: 20px;
@@ -1395,12 +1365,6 @@ svg {
   .instruction-board {
     min-height: 96px;
   }
-  .guide-portrait {
-    display: block;
-    flex-basis: 70px;
-    width: 70px;
-    height: 79px;
-  }
   .instruction-text {
     font-size: 19px;
   }
@@ -1453,9 +1417,6 @@ svg {
   }
   .objective-chip svg {
     width: 20px;
-  }
-  .guide-portrait {
-    display: none;
   }
   .instruction-text {
     font-size: 18px;
@@ -1618,5 +1579,170 @@ svg {
     transition: none !important;
     /* pi-lens-ignore: no-important */
     scroll-behavior: auto !important;
+  }
+}
+
+/* Navigation back to the welcome screen. */
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 8px 16px;
+  border: 2px solid #e4d4b4;
+  border-radius: 24px;
+  background: #fff8e8;
+  color: #4c3827;
+  font-size: 15px;
+  font-weight: 900;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.home-button:hover {
+  background: #f7e6bc;
+}
+.home-button svg {
+  width: 22px;
+  height: 22px;
+}
+@media (max-width: 1700px) {
+  .home-button {
+    padding: 8px;
+    justify-content: center;
+  }
+  .home-button span {
+    display: none;
+  }
+}
+.leave-dialog {
+  width: min(460px, calc(100% - 28px));
+}
+.leave-dialog h2 {
+  font-size: 25px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.intro-reset {
+  margin-bottom: 14px;
+}
+.intro-reset .fine-print {
+  margin-top: 8px;
+}
+
+/* Pictogram sentence: the instruction as ARASAAC pictograms above the text. */
+.instruction-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.picto-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px 4px;
+}
+.picto-part {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.picto-plus {
+  color: #b58a52;
+  font-size: 22px;
+  font-weight: 1000;
+  line-height: 1;
+}
+.picto-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 80px;
+  padding: 4px 3px 5px;
+  background: #fff;
+  border: 2px solid #efd7a5;
+  border-radius: 12px;
+}
+.picto-item.product {
+  border-color: #ca351f;
+}
+.picto-item img,
+.picto-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+.picto-icon {
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+  line-height: 1;
+}
+.picto-caption {
+  max-width: 100%;
+  color: #3a2a1a;
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 900px) {
+  .picto-item {
+    width: 96px;
+  }
+  .picto-item img,
+  .picto-icon {
+    width: 80px;
+    height: 80px;
+  }
+  .picto-caption {
+    font-size: 12px;
+  }
+}
+@media (max-width: 400px) {
+  .picto-item {
+    width: 66px;
+  }
+  .picto-item img,
+  .picto-icon {
+    width: 56px;
+    height: 56px;
+  }
+  .picto-icon {
+    font-size: 38px;
+  }
+  .picto-plus {
+    font-size: 18px;
+  }
+}
+@media (max-width: 400px) {
+  /* Speaker beside the sentence; the text spans the full width below it. */
+  .instruction-paper {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .instruction-body {
+    display: contents;
+  }
+  .picto-sentence {
+    order: 1;
+    flex: 1;
+    min-width: 0;
+  }
+  .speaker-button {
+    order: 2;
+  }
+  .instruction-text {
+    order: 3;
+    flex: 0 0 100%;
+  }
+  .picto-caption {
+    font-size: 10px;
   }
 }

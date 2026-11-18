@@ -48,3 +48,12 @@ node_modules/
 artifacts/
 playwright-report/
 test-results/
+
+# Entrega (ZIP generado)
+entrega/
+
+# Experimento A (entregable del Hito 1)
+!codigo/ia_models/experimentos/notebooks/*.ipynb
+
+# Curva de convergencia completa (15 MB, se regenera con entrenar_y_evaluar.py)
+datos/simulaciones/convergencia_qlearning.csv

@@ -1,6 +1,13 @@
 import { mkdir } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 
+// These flows start from the shopping screen; the introduction has its own spec.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() =>
+    localStorage.setItem('pictomarket.intro.seen', '1'),
+  );
+});
+
 for (const width of [320, 360, 390, 720, 768, 1024, 1440, 1590]) {
   test(`interfaz accesible y sin desbordamiento a ${width}px`, async ({
     page,
@@ -119,6 +126,12 @@ test('compra, pistas, exportación, reinicio y otro escenario', async ({
   await page.getByRole('button', { name: 'EMPEZAR' }).click();
   const buy = async (id: number) =>
     page.locator(`[data-product-id="${id}"]`).click();
+  // The three-step escalation below is the rules policy; Q-Learning is the default.
+  await page.getByRole('button', { name: 'Panel del terapeuta' }).click();
+  await page.getByLabel('Ayuda del agente').selectOption('reglas');
+  await page
+    .getByRole('button', { name: 'Cerrar panel del terapeuta' })
+    .click();
   await buy(2964);
   await buy(2699);
   await buy(2858);

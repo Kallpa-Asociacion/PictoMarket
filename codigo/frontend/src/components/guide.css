@@ -1,0 +1,260 @@
+/* Guide mascot (Inti) and speech bubbles. Animations only use transform and
+   opacity; the global prefers-reduced-motion block in styles.css turns them off. */
+:root {
+  --topbar-height: 116px;
+  --app-width: min(1320px, calc(100vw - 48px));
+  --guide-size: 104px;
+  --bubble-max: 160px;
+}
+
+.guide-mascot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 14px;
+  pointer-events: none;
+}
+.guide-mascot > * {
+  pointer-events: auto;
+}
+
+/* Portrait: wooden frame, same warm borders as the instruction board. */
+.guide-portrait-frame {
+  flex: 0 0 var(--guide-size);
+  width: var(--guide-size);
+  height: var(--guide-size);
+  cursor: pointer;
+}
+.guide-figure {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 90%;
+}
+.guide-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+  border-radius: 50%;
+  border: 5px solid #c78a45;
+  background: #ffe6b6;
+  box-shadow:
+    inset 0 0 0 3px #ffebbd,
+    0 4px 0 #986136,
+    0 8px 12px #603c3040;
+}
+.guide-badge {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  font-size: 22px;
+  line-height: 1;
+  background: var(--paper);
+  border: 3px solid #efd7a5;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px #603c3040;
+}
+
+/* Speech bubble. */
+.speech-wrap {
+  min-width: 0;
+}
+.speech-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: var(--bubble-max);
+  padding: 10px 14px;
+  background: var(--paper);
+  border: 3px solid #efd7a5;
+  border-radius: 20px;
+  box-shadow:
+    0 6px 14px #603c3033,
+    inset 0 2px 0 #fff;
+  color: #4a2e1a;
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 800;
+  line-height: 1.25;
+  animation: guide-bubble-in 180ms ease-out;
+}
+.speech-bubble::before,
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+}
+.tail-right::before {
+  top: 24px;
+  right: -23px;
+  border-left-color: #efd7a5;
+}
+.tail-right::after {
+  top: 24px;
+  right: -17px;
+  border-left-color: var(--paper);
+}
+.tail-top::before {
+  top: -23px;
+  right: 26px;
+  border-bottom-color: #efd7a5;
+}
+.tail-top::after {
+  top: -17px;
+  right: 26px;
+  border-bottom-color: var(--paper);
+}
+.tail-left::before {
+  top: 24px;
+  left: -23px;
+  border-right-color: #efd7a5;
+}
+.tail-left::after {
+  top: 24px;
+  left: -17px;
+  border-right-color: var(--paper);
+}
+.speech-speaker {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #efe6d6;
+  background: #fff;
+  color: #302d3b;
+  box-shadow: 0 3px 6px #5b421b30;
+}
+.speech-speaker svg {
+  width: 24px;
+  height: 24px;
+}
+.speech-speaker:hover:not(:disabled) {
+  background: #fff0cd;
+}
+
+/* Placement. Desktop: fixed top-right, under the top bar. Smaller screens:
+   in the page flow so it never covers products while scrolling. */
+.guide-mascot {
+  width: calc(100% - 24px);
+  margin: -8px auto 14px;
+  --guide-size: 72px;
+  --bubble-max: min(calc(100vw - 150px), 340px);
+}
+.guide-mascot .speech-bubble {
+  font-size: 17px;
+}
+.guide-badge {
+  width: 30px;
+  height: 30px;
+  font-size: 17px;
+}
+.guide-image {
+  border-width: 4px;
+}
+
+@media (min-width: 961px) {
+  .guide-game {
+    position: fixed;
+    z-index: 30;
+    top: calc(var(--topbar-height) + 12px);
+    right: calc((100vw - var(--app-width)) / 2);
+    width: auto;
+    margin: 0;
+    --guide-size: 88px;
+    --bubble-max: 160px;
+  }
+  .guide-game .speech-bubble {
+    font-size: 17px;
+  }
+  .guide-game .guide-badge {
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+  }
+  .market-app .shopping-sidebar {
+    margin-top: calc(var(--guide-size, 88px) - 4px);
+  }
+}
+@media (min-width: 1201px) {
+  .guide-game {
+    --guide-size: 104px;
+    --bubble-max: 190px;
+  }
+  .guide-game .speech-bubble {
+    font-size: 19px;
+  }
+  .guide-game .guide-badge {
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+}
+@media (min-width: 1701px) {
+  :root {
+    --app-width: min(1440px, calc(100vw - 48px));
+  }
+  .guide-game {
+    --bubble-max: 240px;
+  }
+}
+/* Mood animations (transform/opacity only). */
+@keyframes guide-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes guide-wave {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(8deg);
+  }
+}
+@keyframes guide-jump {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes guide-lean {
+  to {
+    transform: rotate(4deg);
+  }
+}
+@keyframes guide-bounce {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.guide-figure[data-mood='greet'] .guide-badge {
+  animation: guide-wave 600ms ease-in-out 2;
+}
+.guide-figure[data-mood='celebrate'] {
+  animation: guide-jump 300ms ease-out 1;
+}
+.guide-figure[data-mood='encourage'],
+.guide-figure[data-mood='think'] {
+  animation: guide-lean 300ms ease-out forwards;
+}
+.guide-figure[data-mood='point'] .guide-badge {
+  animation: guide-bounce 400ms ease-in-out 2;
+}

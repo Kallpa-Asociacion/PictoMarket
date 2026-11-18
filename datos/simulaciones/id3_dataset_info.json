@@ -1,0 +1,14 @@
+{
+ "states": 119,
+ "train_states": 83,
+ "test_states": 36,
+ "test_accuracy": 0.7778,
+ "majority_class_accuracy": 0.5833,
+ "label_distribution": {
+  "1": 4,
+  "2": 56,
+  "3": 46,
+  "4": 13
+ },
+ "root_feature": 3
+}

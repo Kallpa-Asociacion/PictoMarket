@@ -24,8 +24,10 @@ PictoMarket/
 │   │   ├── public/        # Arte, pictogramas y fuentes locales
 │   │   ├── tests/         # Unitarias, voz y Playwright
 │   │   └── scripts/       # Mantenimiento de recursos y runner de pruebas
+│   ├── ia_models/         # Agente guía en Python: simulador, ID3, Q-Learning, métricas (ver su README)
+│   ├── backend/           # API FastAPI mínima y opcional con las políticas
 │   └── legacy/streamlit/  # Versión anterior y sus propias pruebas/dependencias
-├── datos/                 # Catálogo y escenarios compartidos
+├── datos/                 # Catálogo, escenarios, políticas exportadas y métricas de simulación
 ├── img/                   # Imágenes originales y referencia de diseño
 └── README.md
 ```
@@ -47,6 +49,25 @@ npm run format:check
 ```
 
 Las pruebas de navegador son útiles para comprobar compras, pistas, carga de imágenes y diseño adaptable. Están en **`codigo/frontend/tests/e2e/`** junto al resto de pruebas de presentación.
+
+## Despliegue (Vercel)
+
+El proyecto está conectado a Vercel y se actualiza solo:
+
+- **Push a `main`:** despliegue de producción.
+- **Push a otra rama o pull request:** despliegue de vista previa con su propia URL.
+
+La configuración vive en la raíz, en `vercel.json`. Instala y construye `codigo/frontend` desde la raíz para que el build lea `datos/` (escenarios, políticas exportadas y pictogramas de función), y publica `codigo/frontend/dist`. `.vercelignore` excluye dependencias, builds y entornos virtuales locales.
+
+Para comprobar el build tal como lo ejecuta Vercel:
+
+```bash
+cd codigo/frontend
+npm ci
+npm run build
+```
+
+Si se reentrenan las políticas (`codigo/ia_models`), basta con commitear los JSON de `datos/politicas/`: el siguiente despliegue los incluye.
 
 ## Documentación
 

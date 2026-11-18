@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { fireEvent, render, screen, within, act } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../../src/App';
 
 const voice = {
@@ -26,7 +26,10 @@ beforeEach(() => {
   vi.stubGlobal('speechSynthesis', synth);
   vi.stubGlobal('SpeechSynthesisUtterance', FakeUtterance);
   vi.stubGlobal('scrollTo', vi.fn());
+  // Existing flows assume the introduction was already seen.
+  localStorage.setItem('pictomarket.intro.seen', '1');
 });
+afterEach(() => localStorage.clear());
 function mount(started = true) {
   const view = render(
     <StrictMode>
@@ -35,6 +38,19 @@ function mount(started = true) {
   );
   if (started) fireEvent.click(screen.getByRole('button', { name: 'EMPEZAR' }));
   return view;
+}
+
+// The default help policy is now the learned one; these flows assert the
+// original a1 -> a2 -> a3 escalation, so they select the rules policy.
+function selectRules() {
+  fireEvent.click(screen.getByRole('button', { name: 'Panel del terapeuta' }));
+  const dialog = screen.getByRole('dialog');
+  fireEvent.change(within(dialog).getByLabelText('Ayuda del agente'), {
+    target: { value: 'reglas' },
+  });
+  fireEvent.click(
+    within(dialog).getByRole('button', { name: 'Cerrar panel del terapeuta' }),
+  );
 }
 function buy(name: string) {
   fireEvent.click(
@@ -137,6 +153,7 @@ describe('frontend React y apoyo de voz', () => {
   });
   it('las tres pistas resaltan categoría y producto correcto', () => {
     mount();
+    selectRules();
     buy('JABÓN');
     buy('CHAMPÚ');
     buy('DENTÍFRICO');

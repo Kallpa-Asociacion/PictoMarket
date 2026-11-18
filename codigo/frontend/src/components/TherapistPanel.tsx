@@ -2,22 +2,30 @@ import { useEffect, useRef } from 'react';
 import {
   ChartNoAxesColumnIncreasing,
   Download,
+  Presentation,
   RotateCcw,
   X,
 } from 'lucide-react';
 import { market } from '../data/market';
 import { agentState, objectiveWords, type GameState } from '../domain/game';
+import { POLICY_LABELS, type PolicyId } from '../domain/policy';
 
 export function TherapistPanel({
   open,
   close,
   state,
   reset,
+  replayTour,
+  policy,
+  setPolicy,
 }: {
   open: boolean;
   close: () => void;
   state: GameState;
   reset: (index?: number) => void;
+  replayTour: () => void;
+  policy: PolicyId;
+  setPolicy: (policy: PolicyId) => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -39,6 +47,7 @@ export function TherapistPanel({
           JSON.stringify(
             {
               escenario: market.retos[state.reto_idx].id_reto,
+              politica_ayuda: policy,
               estado: agentState(state),
               monedas: state.monedas,
               errores_totales: state.errores_totales,
@@ -102,6 +111,19 @@ export function TherapistPanel({
             ))}
           </select>
         </label>
+        <label className="scenario-label">
+          Ayuda del agente
+          <select
+            value={policy}
+            onChange={(event) => setPolicy(event.target.value as PolicyId)}
+          >
+            {(Object.keys(POLICY_LABELS) as PolicyId[]).map((id) => (
+              <option key={id} value={id}>
+                {POLICY_LABELS[id]}
+              </option>
+            ))}
+          </select>
+        </label>
         <div className="therapist-stats">
           <div>
             <strong>
@@ -129,6 +151,12 @@ export function TherapistPanel({
             Exportar sesión JSON
           </button>
         </div>
+        <div className="intro-reset">
+          <button className="soft-button" onClick={replayTour}>
+            <Presentation aria-hidden="true" />
+            Ver presentación otra vez
+          </button>
+        </div>
         <p className="fine-print">
           Reiniciar o cambiar de escenario borra el progreso y los eventos
           actuales, pero conserva los ajustes de voz. Exporta primero si
@@ -143,8 +171,9 @@ export function TherapistPanel({
           <pre>{JSON.stringify(state.log_eventos, null, 2)}</pre>
         </details>
         <p className="fine-print">
-          Política pedagógica por reglas a0–a3. Sin ID3, entrenamiento ni
-          backend. Los datos solo viven en la memoria de esta pestaña.
+          Política de ayuda seleccionable: reglas a0–a3, árbol de decisión ID3 o
+          Q-Learning, entrenados sin conexión con jugadores simulados. Los datos
+          solo viven en la memoria de esta pestaña.
         </p>
       </div>
     </dialog>

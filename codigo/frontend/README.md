@@ -30,6 +30,8 @@ npm run preview     # Previsualización del build en http://127.0.0.1:4173
 Implementación con componentes React basada en **`img/ui.png`**, usando **`img/fondo.png`** y recortes de su arte:
 
 - Pantalla de bienvenida anterior al juego, inspirada en la referencia de inicio: cartel, toldo, guía, carrito y botón amarillo **Empezar**.
+- Presentación guiada sobre la propia pantalla de juego: Inti se desplaza con animación hasta la lista, los productos, la pizarra y la billetera, con su diálogo, mientras el resto de la pantalla se oscurece. Se muestra sola la primera vez (`localStorage` `pictomarket.intro.seen`) y se repite desde el panel del terapeuta («Ver presentación otra vez») sin perder la compra.
+- Guía Inti en la esquina superior derecha durante el juego, con nube corta que reacciona a aciertos y pistas (a1/a2/a3) y ofrece ayuda tras 15 s de inactividad. No altera el estado del juego ni el registro de eventos.
 - Acceso al panel del terapeuta desde la bienvenida para configurar el escenario sin iniciar la compra.
 - Cabecera PictoMarket, objetivo pictográfico durante la compra y logotipo de la referencia.
 - Guía sobre un letrero de madera, con instrucción real y botón para escuchar.
@@ -89,7 +91,7 @@ PictoMarket/
 - **Voz:** `audio/speech-controller.mjs` conserva el controlador probado de la versión anterior, sin dependencias de Streamlit ni de React. `useSpeech` adapta mensajes y ciclo de vida al navegador.
 - **Presentación:** componentes React tipados; estilos sin selectores internos de Streamlit, manipulación manual del DOM ni HTML inyectado.
 
-El frontend sigue siendo autónomo. La extracción del dominio facilita una integración posterior con un backend, pero **no se ha añadido FastAPI, ID3 ni aprendizaje automático**.
+El frontend sigue siendo autónomo. La extracción del dominio facilita una integración posterior con un backend, pero **el frontend no depende de un servidor**: interpreta las políticas ID3 y Q-Learning exportadas por `codigo/ia_models` (`src/domain/policy.ts`).
 
 ## Datos y política pedagógica conservados
 
@@ -98,7 +100,7 @@ El frontend sigue siendo autónomo. La extracción del dominio facilita una inte
 | `desayuno_saludable` | 1     | Leche, pan, manzana                     | 6           |
 | `almuerzo_casa`      | 2     | Pechuga de pollo, papa, tomate, lechuga | 8           |
 
-Al abrir se presenta la bienvenida. **Empezar** inicia el almuerzo por defecto, o el reto elegido previamente en el panel del terapeuta. La espera en la bienvenida no cuenta en el tiempo del primer evento: se crea una actividad limpia al empezar. El foco pasa a los productos, sin activar voz automáticamente. Recargar vuelve a la bienvenida; no se persiste el progreso.
+Pantallas: `home` → `game` (máquina simple en `App.tsx`, sin router; la presentación es una capa `GameTour` sobre `game`). Al abrir se presenta la bienvenida. **Empezar** abre el juego con la presentación la primera vez y directo después; el botón **Inicio** del juego vuelve a la bienvenida (con confirmación si hay productos en el carrito). **Empezar** inicia el almuerzo por defecto, o el reto elegido previamente en el panel del terapeuta. La espera en la bienvenida no cuenta en el tiempo del primer evento: se crea una actividad limpia al empezar. El foco pasa a los productos, sin activar voz automáticamente. Recargar vuelve a la bienvenida; no se persiste el progreso.
 
 | Acción | Condición                                        | Resultado                                         |
 | ------ | ------------------------------------------------ | ------------------------------------------------- |
@@ -107,7 +109,7 @@ Al abrir se presenta la bienvenida. **Empezar** inicia el almuerzo por defecto, 
 | `a2`   | Segundo error                                    | Elimina el distractor tocado y reduce candidatos  |
 | `a3`   | Tercer error o sin distractores al intentar `a2` | Señala el producto correcto                       |
 
-La política es **por reglas**, no un modelo entrenado. Los errores no descuentan monedas y un producto comprado no se cobra dos veces.
+La política **por reglas** es la referencia; el panel del terapeuta permite elegir también el árbol ID3 o Q-Learning (predeterminada), que añaden la acción `a4` (repetir la consulta sin escalar). Los errores no descuentan monedas y un producto comprado no se cobra dos veces.
 
 ## Apoyo de voz
 
@@ -163,9 +165,12 @@ Todos los recursos necesarios están versionados. No hace falta volver a descarg
 
 ```bash
 npm run assets:pictograms           # Descargar el catálogo desde ARASAAC
+node scripts/download-function-pictograms.mjs  # Pictogramas de la oración (datos/pictogramas_funcion.json)
 # Opcional, solo si cambian las imágenes originales; requiere Pillow:
 python scripts/prepare-art.py
 ```
+
+La oración de pictogramas sobre la instrucción (`PictoSentence`, derivada del estado en `src/domain/pictoSentence.ts`) es decorativa (`aria-hidden`); el texto `role="status"` sigue siendo el mensaje accesible.
 
 Al añadir un producto a `datos/escenarios.json`, descarga también su pictograma. Los fallos de imagen mantienen un nombre y una alternativa visual; no sustituyen el producto por un pictograma incorrecto.
 
