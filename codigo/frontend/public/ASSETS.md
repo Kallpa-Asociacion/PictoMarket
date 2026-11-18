@@ -38,6 +38,22 @@ Los recortes se pueden reproducir con `scripts/prepare-art.py`. **No se dispone 
 
 Se conservan los 30 IDs y sus nombres tal como aparecen en `datos/escenarios.json`. Los archivos PNG de `pictograms/` no se redibujan ni reemplazan por iconos de la captura. `scripts/download-pictograms.mjs` reproduce las descargas y valida la firma PNG.
 
+### Pictogramas de función (oración de pictogramas)
+
+Las palabras de función de la consulta del agente (`BUSCAR + PRODUCTO`, pistas, éxito) usan pictogramas reales de **ARASAAC** (autor **Sergio Palao**, **Gobierno de Aragón**, licencia **CC BY-NC-SA**, <https://arasaac.org>). Los IDs, la palabra clave y la búsqueda de origen están en `datos/pictogramas_funcion.json`; `scripts/download-function-pictograms.mjs` los descarga y valida la firma PNG.
+
+| ID    | Palabra ARASAAC        | Uso               |
+| ----- | ---------------------- | ----------------- |
+| 6947  | buscar                 | consulta y pistas |
+| 8986  | comprar                | reservado         |
+| 30618 | carrito de la compra   | éxito             |
+| 11599 | éxito                  | éxito (MUY BIEN)  |
+| 37162 | otra vez               | pista a4          |
+| 6564  | ver, mirar, observar   | pista a3          |
+| 5382  | aquí                   | pista a3          |
+| 19524 | ayuda                  | pista a2          |
+| 11751 | quitar, sacar, extraer | pista a2          |
+
 ## Fuentes e iconos
 
 - **Nunito**, Google Fonts, fuentes locales 700 y 900. Licencia **SIL Open Font License 1.1**, incluida en `fonts/OFL.txt`. Fuente: <https://github.com/google/fonts/tree/main/ofl/nunito>.

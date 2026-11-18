@@ -1,16 +1,21 @@
 import { useReducer } from 'react';
 import { market } from '../data/market';
-import { chooseProduct, startGame, type GameState } from '../domain/game';
+import {
+  chooseProduct,
+  startGame,
+  type GameState,
+  type HelpPolicy,
+} from '../domain/game';
 
 type Event =
-  | { type: 'choose'; id: number; now: number }
+  | { type: 'choose'; id: number; now: number; helpPolicy?: HelpPolicy }
   | { type: 'reset'; state: GameState };
 function reducer(state: GameState, event: Event): GameState {
   return event.type === 'choose'
-    ? chooseProduct(market, state, event.id, event.now)
+    ? chooseProduct(market, state, event.id, event.now, event.helpPolicy)
     : event.state;
 }
-export function useGame() {
+export function useGame(helpPolicy?: HelpPolicy) {
   // Almuerzo corresponde a la referencia; los dos escenarios siguen disponibles.
   const [state, dispatch] = useReducer(reducer, undefined, () =>
     startGame(market, 1),
@@ -18,7 +23,8 @@ export function useGame() {
   return {
     state,
     challenge: market.retos[state.reto_idx],
-    choose: (id: number) => dispatch({ type: 'choose', id, now: Date.now() }),
+    choose: (id: number) =>
+      dispatch({ type: 'choose', id, now: Date.now(), helpPolicy }),
     reset: (index = state.reto_idx) =>
       dispatch({ type: 'reset', state: startGame(market, index) }),
   };

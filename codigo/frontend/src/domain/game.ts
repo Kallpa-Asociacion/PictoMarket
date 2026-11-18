@@ -31,7 +31,10 @@ export interface AgentState {
   intentos_fallidos: number;
   nivel_pista: number;
 }
-export type AgentAction = 'a0' | 'a1' | 'a2' | 'a3';
+export type AgentAction = 'a0' | 'a1' | 'a2' | 'a3' | 'a4';
+// Help the agent can give after a wrong touch (a4 = repeat the query).
+export type HelpAction = Exclude<AgentAction, 'a0'>;
+export type HelpPolicy = (state: GameState) => HelpAction;
 export interface GameEvent {
   escenario_id: string;
   t_ms: number;
@@ -67,7 +70,7 @@ export function voiceText(text: string): string {
 export function createMessage(
   tipo: Message['tipo'],
   texto: string,
-  id = crypto.randomUUID(),
+  id: string = crypto.randomUUID(),
 ): Message {
   return { id, tipo, texto, texto_voz: voiceText(texto) };
 }
@@ -137,6 +140,7 @@ export function chooseProduct(
   state: GameState,
   product: number,
   now = Date.now(),
+  helpPolicy?: HelpPolicy,
 ): GameState {
   const target = state.items_restantes[0];
   if (
@@ -147,7 +151,12 @@ export function chooseProduct(
     return state;
   const challenge = data.retos[state.reto_idx];
   const before = agentState(state);
-  let action = agentPolicy(before, product);
+  // The original rules decide unless a policy is injected; a correct touch is
+  // always a0 whatever the policy.
+  let action: AgentAction =
+    helpPolicy && !state.items_restantes.includes(product)
+      ? helpPolicy(state)
+      : agentPolicy(before, product);
   const name = data.catalogo[product].nombre.toLowerCase();
   const next = {
     ...state,
@@ -187,12 +196,13 @@ export function chooseProduct(
     }
     next.nivel_pista = Math.max(
       state.nivel_pista,
-      { a1: 1, a2: 2, a3: 3 }[action],
+      { a1: 1, a2: 2, a3: 3, a4: 0 }[action],
     );
     const messages = {
       a1: `${name} no está en la lista. Busca en ${category.icono} ${category.nombre.toLowerCase()}.`,
       a2: 'Quité un producto para ayudarte. ¡Tú puedes!',
       a3: `Mira 👇 aquí está ${data.catalogo[target].nombre.toLowerCase()}.`,
+      a4: `${name} no está en la lista. Inténtalo otra vez. Busca: ${data.catalogo[target].nombre.toLowerCase()}.`,
     };
     next.mensaje = createMessage('pista', messages[action]);
   }

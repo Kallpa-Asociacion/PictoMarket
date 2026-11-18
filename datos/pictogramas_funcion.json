@@ -1,0 +1,59 @@
+{
+  "_fuente": "ARASAAC (https://arasaac.org), Sergio Palao, Gobierno de Aragón, licencia CC BY-NC-SA. IDs elegidos de la API pública de búsqueda en español.",
+  "funcion": {
+    "BUSCAR": {
+      "id": 6947,
+      "palabra": "buscar",
+      "keyword_arasaac": "buscar",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/buscar"
+    },
+    "COMPRAR": {
+      "id": 8986,
+      "palabra": "comprar",
+      "keyword_arasaac": "comprar",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/comprar"
+    },
+    "CARRITO": {
+      "id": 30618,
+      "palabra": "carrito",
+      "keyword_arasaac": "carrito de la compra",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/carrito"
+    },
+    "MUY_BIEN": {
+      "id": 11599,
+      "palabra": "muy bien",
+      "keyword_arasaac": "éxito",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/muy%20bien"
+    },
+    "OTRA_VEZ": {
+      "id": 37162,
+      "palabra": "otra vez",
+      "keyword_arasaac": "otra vez",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/otra%20vez"
+    },
+    "MIRAR": {
+      "id": 6564,
+      "palabra": "mirar",
+      "keyword_arasaac": "mirar",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/mirar"
+    },
+    "AQUÍ": {
+      "id": 5382,
+      "palabra": "aquí",
+      "keyword_arasaac": "aquí",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/aqu%C3%AD"
+    },
+    "AYUDA": {
+      "id": 19524,
+      "palabra": "ayuda",
+      "keyword_arasaac": "ayuda",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/ayuda"
+    },
+    "QUITAR": {
+      "id": 11751,
+      "palabra": "quitar",
+      "keyword_arasaac": "quitar",
+      "fuente": "https://api.arasaac.org/v1/pictograms/es/search/quitar"
+    }
+  }
+}

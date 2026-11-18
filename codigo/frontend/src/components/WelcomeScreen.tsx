@@ -1,14 +1,21 @@
 import { ChevronRight, Heart, Leaf } from 'lucide-react';
 import { publicAsset } from '../data/market';
+import type { GuideLine } from '../domain/guide';
+import type { SpeechSupport } from '../hooks/useSpeech';
 import { Header } from './Header';
+import { SpeechBubble } from './SpeechBubble';
 import './welcome.css';
 
 export function WelcomeScreen({
   start,
   openTherapist,
+  speech,
+  line,
 }: {
   start: () => void;
   openTherapist: () => void;
+  speech: SpeechSupport;
+  line: GuideLine;
 }) {
   return (
     <div className="welcome-screen">
@@ -65,11 +72,20 @@ export function WelcomeScreen({
                     alt=""
                   />
                 </div>
+                <SpeechBubble
+                  line={line}
+                  tail="right"
+                  live
+                  speech={speech}
+                  className="welcome-bubble"
+                />
               </div>
               <div className="welcome-counter">
-                <button className="start-button" onClick={start}>
-                  EMPEZAR <ChevronRight aria-hidden="true" />
-                </button>
+                <div className="welcome-actions">
+                  <button className="start-button" onClick={start}>
+                    EMPEZAR <ChevronRight aria-hidden="true" />
+                  </button>
+                </div>
               </div>
             </section>
             <img

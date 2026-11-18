@@ -3,6 +3,7 @@ import { market, publicAsset } from '../data/market';
 import type { GameState } from '../domain/game';
 import type { SpeechSupport } from '../hooks/useSpeech';
 import { Pictogram } from './Pictogram';
+import { PictoSentence } from './PictoSentence';
 
 export function Coin({ spent = false }: { spent?: boolean }) {
   return <span className={`coin ${spent ? 'spent' : ''}`} aria-hidden="true" />;
@@ -19,24 +20,23 @@ function Instruction({
   const parts = name ? state.mensaje.texto.split(name) : [state.mensaje.texto];
   return (
     <div className={`instruction-board ${state.mensaje.tipo}`}>
-      <div className="guide-portrait">
-        <img src={publicAsset('art/guide.webp')} alt="" />
-        <span aria-hidden="true">👋</span>
-      </div>
       <div className="instruction-paper">
-        <p
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-          className="instruction-text"
-        >
-          {parts.map((part, index) => (
-            <span key={index}>
-              {index > 0 && <strong>{name}</strong>}
-              {part}
-            </span>
-          ))}
-        </p>
+        <div className="instruction-body">
+          <PictoSentence data={market} state={state} />
+          <p
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            className="instruction-text"
+          >
+            {parts.map((part, index) => (
+              <span key={index}>
+                {index > 0 && <strong>{name}</strong>}
+                {part}
+              </span>
+            ))}
+          </p>
+        </div>
         <button
           className="speaker-button"
           aria-label={
