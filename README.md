@@ -24,8 +24,10 @@ PictoMarket/
 │   │   ├── public/        # Arte, pictogramas y fuentes locales
 │   │   ├── tests/         # Unitarias, voz y Playwright
 │   │   └── scripts/       # Mantenimiento de recursos y runner de pruebas
+│   ├── ia_models/         # Agente guía en Python: simulador, ID3, Q-Learning, métricas (ver su README)
+│   ├── backend/           # API FastAPI mínima y opcional con las políticas
 │   └── legacy/streamlit/  # Versión anterior y sus propias pruebas/dependencias
-├── datos/                 # Catálogo y escenarios compartidos
+├── datos/                 # Catálogo, escenarios, políticas exportadas y métricas de simulación
 ├── img/                   # Imágenes originales y referencia de diseño
 └── README.md
 ```
