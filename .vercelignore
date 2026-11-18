@@ -1,0 +1,6 @@
+# Se sube todo el proyecto (incluidos codigo/legacy, tests y datos).
+# Solo se excluye lo que Vercel regenera o lo que es local de cada equipo.
+codigo/frontend/node_modules
+codigo/frontend/dist
+venv
+.venv
