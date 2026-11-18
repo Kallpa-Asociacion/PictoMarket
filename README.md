@@ -57,7 +57,7 @@ El proyecto está conectado a Vercel y se actualiza solo:
 - **Push a `main`:** despliegue de producción.
 - **Push a otra rama o pull request:** despliegue de vista previa con su propia URL.
 
-La configuración vive en la raíz, en `vercel.json`. Instala y construye `codigo/frontend` desde la raíz para que el build lea `datos/` (escenarios, políticas exportadas y pictogramas de función), y publica `codigo/frontend/dist`. `.vercelignore` excluye dependencias, builds y entornos virtuales locales.
+El proyecto de Vercel tiene **Root Directory = `codigo/frontend`** (ajuste del dashboard), así que los comandos de `vercel.json` se ejecutan dentro de esa carpeta: `npm ci`, `npm run build` y salida `dist`. El build puede leer `datos/` (escenarios, políticas exportadas y pictogramas de función) porque Vercel incluye los archivos fuera del Root Directory. `.vercelignore` excluye dependencias, builds y entornos virtuales locales.
 
 Para comprobar el build tal como lo ejecuta Vercel:
 
