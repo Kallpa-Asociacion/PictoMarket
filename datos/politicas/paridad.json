@@ -1,0 +1,2514 @@
+{
+ "cases": [
+  {
+   "order": [
+    7021,
+    2445,
+    2699,
+    2494,
+    2618,
+    2964,
+    2462,
+    2619,
+    8312
+   ],
+   "scenario": 0,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 7963,
+     "product": 2445,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       7021,
+       2445,
+       2699,
+       2494,
+       2618,
+       2964,
+       2462,
+       2619,
+       8312
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 2,
+      "qlearning": 3,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 15298,
+     "product": 2699,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       7021,
+       2445,
+       2699,
+       2494,
+       2618,
+       2964,
+       2462,
+       2619,
+       8312
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 3,
+      "qlearning": 3,
+      "reglas": 2
+     },
+     "features": [
+      1,
+      1,
+      2,
+      2,
+      2,
+      1,
+      1
+     ],
+     "now": 18582,
+     "product": 2619,
+     "rules_state_after": {
+      "action": "a2",
+      "errores_totales": 2,
+      "intentos_fallidos": 2,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 2,
+      "productos_visibles": [
+       7021,
+       2445,
+       2699,
+       2494,
+       2618,
+       2964,
+       2462,
+       8312
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1
+     ],
+     "now": 25281,
+     "product": 2494,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 2,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494
+      ],
+      "items_restantes": [
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       7021,
+       2445,
+       2699,
+       2494,
+       2618,
+       2964,
+       2462,
+       8312
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      2,
+      0,
+      0
+     ],
+     "now": 28170,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 2,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494,
+       2462
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       7021,
+       2445,
+       2699,
+       2494,
+       2618,
+       2964,
+       2462,
+       8312
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    8655,
+    2462,
+    2534,
+    2858,
+    2541,
+    2594,
+    2964,
+    2446,
+    2699,
+    2503
+   ],
+   "scenario": 1,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 2,
+      "qlearning": 2,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 1740,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [],
+      "items_restantes": [
+       8655,
+       2503,
+       2594,
+       2446
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       8655,
+       2462,
+       2534,
+       2858,
+       2541,
+       2594,
+       2964,
+       2446,
+       2699,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      1,
+      1,
+      2,
+      3,
+      1,
+      1,
+      1
+     ],
+     "now": 2900,
+     "product": 8655,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655
+      ],
+      "items_restantes": [
+       2503,
+       2594,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8655,
+       2462,
+       2534,
+       2858,
+       2541,
+       2594,
+       2964,
+       2446,
+       2699,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      2,
+      0,
+      1
+     ],
+     "now": 7522,
+     "product": 2503,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2503
+      ],
+      "items_restantes": [
+       2594,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8655,
+       2462,
+       2534,
+       2858,
+       2541,
+       2594,
+       2964,
+       2446,
+       2699,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 13481,
+     "product": 2446,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2503,
+       2446
+      ],
+      "items_restantes": [
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8655,
+       2462,
+       2534,
+       2858,
+       2541,
+       2594,
+       2964,
+       2446,
+       2699,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 3,
+      "qlearning": 3,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 18355,
+     "product": 2534,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 2,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [
+       8655,
+       2503,
+       2446
+      ],
+      "items_restantes": [
+       2594
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       8655,
+       2462,
+       2534,
+       2858,
+       2541,
+       2594,
+       2964,
+       2446,
+       2699,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      1
+     ],
+     "now": 27299,
+     "product": 2594,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 2,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2503,
+       2446,
+       2594
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8655,
+       2462,
+       2534,
+       2858,
+       2541,
+       2594,
+       2964,
+       2446,
+       2699,
+       2503
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2964,
+    8312,
+    2494,
+    2618,
+    2445,
+    2462,
+    7021,
+    2619,
+    2699
+   ],
+   "scenario": 0,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 5177,
+     "product": 2445,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2964,
+       8312,
+       2494,
+       2618,
+       2445,
+       2462,
+       7021,
+       2619,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 7504,
+     "product": 2494,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494
+      ],
+      "items_restantes": [
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2964,
+       8312,
+       2494,
+       2618,
+       2445,
+       2462,
+       7021,
+       2619,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      1
+     ],
+     "now": 14108,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494,
+       2462
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2964,
+       8312,
+       2494,
+       2618,
+       2445,
+       2462,
+       7021,
+       2619,
+       2699
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2858,
+    2446,
+    2594,
+    2964,
+    2462,
+    2699,
+    2503,
+    8655,
+    2534,
+    2541
+   ],
+   "scenario": 1,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 6074,
+     "product": 8655,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655
+      ],
+      "items_restantes": [
+       2503,
+       2594,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2858,
+       2446,
+       2594,
+       2964,
+       2462,
+       2699,
+       2503,
+       8655,
+       2534,
+       2541
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 11779,
+     "product": 2503,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2503
+      ],
+      "items_restantes": [
+       2594,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2858,
+       2446,
+       2594,
+       2964,
+       2462,
+       2699,
+       2503,
+       8655,
+       2534,
+       2541
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 17485,
+     "product": 2594,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2503,
+       2594
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2858,
+       2446,
+       2594,
+       2964,
+       2462,
+       2699,
+       2503,
+       8655,
+       2534,
+       2541
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 20933,
+     "product": 2446,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2503,
+       2594,
+       2446
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2858,
+       2446,
+       2594,
+       2964,
+       2462,
+       2699,
+       2503,
+       8655,
+       2534,
+       2541
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2699,
+    2445,
+    2618,
+    2619,
+    8312,
+    7021,
+    2494,
+    2964,
+    2462
+   ],
+   "scenario": 0,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 2,
+      "qlearning": 2,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 8645,
+     "product": 7021,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [],
+      "items_restantes": [
+       2445,
+       2494,
+       2462
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       2699,
+       2445,
+       2618,
+       2619,
+       8312,
+       7021,
+       2494,
+       2964,
+       2462
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      1,
+      1,
+      2,
+      3,
+      1,
+      1,
+      1
+     ],
+     "now": 10681,
+     "product": 2445,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2445,
+       2618,
+       2619,
+       8312,
+       7021,
+       2494,
+       2964,
+       2462
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      2,
+      0,
+      1
+     ],
+     "now": 11909,
+     "product": 2494,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494
+      ],
+      "items_restantes": [
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2445,
+       2618,
+       2619,
+       8312,
+       7021,
+       2494,
+       2964,
+       2462
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 16009,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494,
+       2462
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2445,
+       2618,
+       2619,
+       8312,
+       7021,
+       2494,
+       2964,
+       2462
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2699,
+    8655,
+    2858,
+    2462,
+    2541,
+    2964,
+    2534,
+    2594,
+    2446,
+    2503
+   ],
+   "scenario": 1,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 5170,
+     "product": 2446,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446
+      ],
+      "items_restantes": [
+       8655,
+       2503,
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       8655,
+       2858,
+       2462,
+       2541,
+       2964,
+       2534,
+       2594,
+       2446,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 9928,
+     "product": 8655,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446,
+       8655
+      ],
+      "items_restantes": [
+       2503,
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       8655,
+       2858,
+       2462,
+       2541,
+       2964,
+       2534,
+       2594,
+       2446,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 18604,
+     "product": 2503,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446,
+       8655,
+       2503
+      ],
+      "items_restantes": [
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       8655,
+       2858,
+       2462,
+       2541,
+       2964,
+       2534,
+       2594,
+       2446,
+       2503
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 24075,
+     "product": 2594,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446,
+       8655,
+       2503,
+       2594
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       8655,
+       2858,
+       2462,
+       2541,
+       2964,
+       2534,
+       2594,
+       2446,
+       2503
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2462,
+    2618,
+    2699,
+    7021,
+    2964,
+    2494,
+    8312,
+    2445,
+    2619
+   ],
+   "scenario": 0,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 5584,
+     "product": 2445,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2618,
+       2699,
+       7021,
+       2964,
+       2494,
+       8312,
+       2445,
+       2619
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 11055,
+     "product": 2494,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494
+      ],
+      "items_restantes": [
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2618,
+       2699,
+       7021,
+       2964,
+       2494,
+       8312,
+       2445,
+       2619
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 13604,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494,
+       2462
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2618,
+       2699,
+       7021,
+       2964,
+       2494,
+       8312,
+       2445,
+       2619
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2699,
+    2541,
+    2594,
+    2446,
+    2964,
+    2858,
+    2534,
+    2462,
+    2503,
+    8655
+   ],
+   "scenario": 1,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 1251,
+     "product": 2446,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446
+      ],
+      "items_restantes": [
+       8655,
+       2503,
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2541,
+       2594,
+       2446,
+       2964,
+       2858,
+       2534,
+       2462,
+       2503,
+       8655
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 2257,
+     "product": 8655,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446,
+       8655
+      ],
+      "items_restantes": [
+       2503,
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2541,
+       2594,
+       2446,
+       2964,
+       2858,
+       2534,
+       2462,
+       2503,
+       8655
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      0,
+      0,
+      1
+     ],
+     "now": 10496,
+     "product": 2503,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446,
+       8655,
+       2503
+      ],
+      "items_restantes": [
+       2594
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2541,
+       2594,
+       2446,
+       2964,
+       2858,
+       2534,
+       2462,
+       2503,
+       8655
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 4,
+      "qlearning": 4,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      1
+     ],
+     "now": 12185,
+     "product": 2699,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [
+       2446,
+       8655,
+       2503
+      ],
+      "items_restantes": [
+       2594
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       2699,
+       2541,
+       2594,
+       2446,
+       2964,
+       2858,
+       2534,
+       2462,
+       2503,
+       8655
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      1
+     ],
+     "now": 18378,
+     "product": 2594,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2446,
+       8655,
+       2503,
+       2594
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2699,
+       2541,
+       2594,
+       2446,
+       2964,
+       2858,
+       2534,
+       2462,
+       2503,
+       8655
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    8312,
+    2699,
+    2462,
+    2964,
+    7021,
+    2494,
+    2445,
+    2618,
+    2619
+   ],
+   "scenario": 0,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 8207,
+     "product": 2445,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8312,
+       2699,
+       2462,
+       2964,
+       7021,
+       2494,
+       2445,
+       2618,
+       2619
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 2,
+      "qlearning": 3,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 15477,
+     "product": 7021,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       8312,
+       2699,
+       2462,
+       2964,
+       7021,
+       2494,
+       2445,
+       2618,
+       2619
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      1,
+      1,
+      2,
+      2,
+      2,
+      1,
+      1
+     ],
+     "now": 23732,
+     "product": 2494,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494
+      ],
+      "items_restantes": [
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8312,
+       2699,
+       2462,
+       2964,
+       7021,
+       2494,
+       2445,
+       2618,
+       2619
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 24574,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494,
+       2462
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       8312,
+       2699,
+       2462,
+       2964,
+       7021,
+       2494,
+       2445,
+       2618,
+       2619
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2462,
+    2503,
+    2541,
+    2446,
+    8655,
+    2594,
+    2534,
+    2964,
+    2858,
+    2699
+   ],
+   "scenario": 1,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 7485,
+     "product": 8655,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655
+      ],
+      "items_restantes": [
+       2503,
+       2594,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2503,
+       2541,
+       2446,
+       8655,
+       2594,
+       2534,
+       2964,
+       2858,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 14787,
+     "product": 2594,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2594
+      ],
+      "items_restantes": [
+       2503,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2503,
+       2541,
+       2446,
+       8655,
+       2594,
+       2534,
+       2964,
+       2858,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 2,
+      "qlearning": 3,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 21538,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [
+       8655,
+       2594
+      ],
+      "items_restantes": [
+       2503,
+       2446
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       2462,
+       2503,
+       2541,
+       2446,
+       8655,
+       2594,
+       2534,
+       2964,
+       2858,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      1,
+      1,
+      2,
+      2,
+      1,
+      1,
+      1
+     ],
+     "now": 23919,
+     "product": 2503,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2503,
+       2541,
+       2446,
+       8655,
+       2594,
+       2534,
+       2964,
+       2858,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 26346,
+     "product": 2446,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 1,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503,
+       2446
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2462,
+       2503,
+       2541,
+       2446,
+       8655,
+       2594,
+       2534,
+       2964,
+       2858,
+       2699
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2445,
+    2494,
+    2964,
+    2462,
+    7021,
+    2619,
+    2618,
+    8312,
+    2699
+   ],
+   "scenario": 0,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 1532,
+     "product": 2445,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445
+      ],
+      "items_restantes": [
+       2494,
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2445,
+       2494,
+       2964,
+       2462,
+       7021,
+       2619,
+       2618,
+       8312,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 10138,
+     "product": 2494,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494
+      ],
+      "items_restantes": [
+       2462
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2445,
+       2494,
+       2964,
+       2462,
+       7021,
+       2619,
+       2618,
+       8312,
+       2699
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1
+     ],
+     "now": 15165,
+     "product": 2462,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       2445,
+       2494,
+       2462
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2445,
+       2494,
+       2964,
+       2462,
+       7021,
+       2619,
+       2618,
+       8312,
+       2699
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "order": [
+    2594,
+    2462,
+    2541,
+    2446,
+    2699,
+    2858,
+    2503,
+    8655,
+    2534,
+    2964
+   ],
+   "scenario": 1,
+   "touches": [
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 8001,
+     "product": 8655,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655
+      ],
+      "items_restantes": [
+       2503,
+       2594,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2594,
+       2462,
+       2541,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      3,
+      1,
+      0,
+      1
+     ],
+     "now": 9364,
+     "product": 2594,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2594
+      ],
+      "items_restantes": [
+       2503,
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2594,
+       2462,
+       2541,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      1
+     ],
+     "now": 11498,
+     "product": 2503,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 0,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2594,
+       2462,
+       2541,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 4,
+      "qlearning": 4,
+      "reglas": 1
+     },
+     "features": [
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      1
+     ],
+     "now": 18413,
+     "product": 2699,
+     "rules_state_after": {
+      "action": "a1",
+      "errores_totales": 1,
+      "intentos_fallidos": 1,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 1,
+      "productos_visibles": [
+       2594,
+       2462,
+       2541,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 3,
+      "qlearning": 4,
+      "reglas": 2
+     },
+     "features": [
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      1
+     ],
+     "now": 24787,
+     "product": 2541,
+     "rules_state_after": {
+      "action": "a2",
+      "errores_totales": 2,
+      "intentos_fallidos": 2,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 2,
+      "productos_visibles": [
+       2594,
+       2462,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 4,
+      "qlearning": 3,
+      "reglas": 3
+     },
+     "features": [
+      2,
+      2,
+      2,
+      1,
+      1,
+      2,
+      1
+     ],
+     "now": 26692,
+     "product": 2534,
+     "rules_state_after": {
+      "action": "a3",
+      "errores_totales": 3,
+      "intentos_fallidos": 3,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 3,
+      "productos_visibles": [
+       2594,
+       2462,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 4,
+      "qlearning": 2,
+      "reglas": 3
+     },
+     "features": [
+      3,
+      3,
+      2,
+      1,
+      2,
+      3,
+      1
+     ],
+     "now": 29937,
+     "product": 2858,
+     "rules_state_after": {
+      "action": "a3",
+      "errores_totales": 4,
+      "intentos_fallidos": 4,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503
+      ],
+      "items_restantes": [
+       2446
+      ],
+      "nivel_pista": 3,
+      "productos_visibles": [
+       2594,
+       2462,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    },
+    {
+     "expected_action": {
+      "id3": 0,
+      "qlearning": 0,
+      "reglas": 0
+     },
+     "features": [
+      3,
+      3,
+      2,
+      1,
+      2,
+      3,
+      1
+     ],
+     "now": 33464,
+     "product": 2446,
+     "rules_state_after": {
+      "action": "a0",
+      "errores_totales": 4,
+      "intentos_fallidos": 0,
+      "items_en_carrito": [
+       8655,
+       2594,
+       2503,
+       2446
+      ],
+      "items_restantes": [],
+      "nivel_pista": 0,
+      "productos_visibles": [
+       2594,
+       2462,
+       2446,
+       2699,
+       2858,
+       2503,
+       8655,
+       2534,
+       2964
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "version": 1
+}
