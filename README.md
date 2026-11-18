@@ -62,8 +62,9 @@ La configuración vive en la raíz, en `vercel.json`. Instala y construye `codig
 Para comprobar el build tal como lo ejecuta Vercel:
 
 ```bash
-npm ci --prefix codigo/frontend
-npm run build --prefix codigo/frontend
+cd codigo/frontend
+npm ci
+npm run build
 ```
 
 Si se reentrenan las políticas (`codigo/ia_models`), basta con commitear los JSON de `datos/politicas/`: el siguiente despliegue los incluye.
