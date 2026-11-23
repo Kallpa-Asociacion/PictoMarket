@@ -5,6 +5,14 @@ import type { SpeechSupport } from '../hooks/useSpeech';
 import { Pictogram } from './Pictogram';
 import { PictoSentence } from './PictoSentence';
 
+/** Guide demo: green (`target`) or amber (`category`) hint on some products. */
+export interface Demo {
+  ids: readonly number[];
+  tone: 'target' | 'category';
+  /** Products taken off the shelf, like the help does after mistakes. */
+  hidden?: readonly number[];
+}
+
 export function Coin({ spent = false }: { spent?: boolean }) {
   return <span className={`coin ${spent ? 'spent' : ''}`} aria-hidden="true" />;
 }
@@ -59,20 +67,27 @@ function ProductCard({
   id,
   state,
   choose,
+  demo,
 }: {
   id: number;
   state: GameState;
   choose: (id: number) => void;
+  demo?: Demo;
 }) {
   const product = market.catalogo[id];
   const bought = state.items_en_carrito.includes(id);
   const target = state.items_restantes[0];
-  const directHint = state.nivel_pista >= 3 && id === target;
+  const demoHit = !bought && !!demo?.ids.includes(id);
+  const directHint =
+    (state.nivel_pista >= 3 && id === target) ||
+    (demoHit && demo?.tone === 'target');
   const categoryHint =
-    !bought &&
-    target &&
-    state.nivel_pista >= 1 &&
-    product.categoria === market.catalogo[target].categoria;
+    (demoHit && demo?.tone === 'category') ||
+    (!demo &&
+      !bought &&
+      target &&
+      state.nivel_pista >= 1 &&
+      product.categoria === market.catalogo[target].categoria);
   return (
     <button
       className={`product-card ${bought ? 'bought' : ''} ${categoryHint ? 'category-hint' : ''} ${directHint ? 'target-hint' : ''}`}
@@ -112,23 +127,29 @@ export function MarketStall({
   choose,
   reset,
   speech,
+  demo,
 }: {
   state: GameState;
   choose: (id: number) => void;
   reset: (index?: number) => void;
   speech: SpeechSupport;
+  /** Demo level: products shown with a hint, whatever the hint level. */
+  demo?: Demo;
 }) {
   const completed = !state.items_restantes.length;
   // Hasta cuatro tarjetas por estante: almuerzo tiene diez, la referencia nueve.
   // Distribuir 3 + 3 + 4 conserva todos los datos sin una cuarta fila casi vacía.
-  const count = state.productos_visibles.length;
+  const visible = demo?.hidden
+    ? state.productos_visibles.filter((id) => !demo.hidden?.includes(id))
+    : state.productos_visibles;
+  const count = visible.length;
   const rowCount = Math.ceil(count / 4);
   const baseSize = Math.floor(count / rowCount);
   const extra = count % rowCount;
   const rows = Array.from({ length: rowCount }, (_, index) => {
     const start = index * baseSize + Math.max(0, index - (rowCount - extra));
     const size = baseSize + (index >= rowCount - extra ? 1 : 0);
-    return state.productos_visibles.slice(start, start + size);
+    return visible.slice(start, start + size);
   });
   return (
     <section
@@ -204,6 +225,7 @@ export function MarketStall({
                         id={id}
                         state={state}
                         choose={choose}
+                        demo={demo}
                       />
                     ))}
                   </div>

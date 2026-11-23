@@ -3,12 +3,12 @@ import { GuideMascot } from './components/GuideMascot';
 import { Header } from './components/Header';
 import { GameTour } from './components/GameTour';
 import { LeaveDialog } from './components/LeaveDialog';
-import { MarketStall } from './components/MarketStall';
+import { MarketStall, type Demo } from './components/MarketStall';
 import { ShoppingPanels } from './components/ShoppingPanels';
 import { TherapistPanel } from './components/TherapistPanel';
 import { VoiceControls } from './components/VoiceControls';
 import { WelcomeScreen } from './components/WelcomeScreen';
-import { INTRO_STEPS } from './content/intro';
+import { INTRO_STEPS, focusSteps, type FocusPlan } from './content/intro';
 import { createMessage } from './domain/game';
 import { GUIDE_NAME, guideLineFromGame, type GuideLine } from './domain/guide';
 import { market } from './data/market';
@@ -29,6 +29,8 @@ const SKIP_LINKS: Record<Screen, { href: string; label: string }> = {
   game: { href: '#mercado', label: 'Ir a los productos' },
 };
 const IDLE_TEXT = '¿Te ayudo? Toca 🔊 para escuchar.';
+// Time on the list (and on the list item) before the spotlight moves on.
+const FOCUS_ADVANCE_MS = 3000;
 
 export default function App() {
   const [policyId, setPolicyId] = useState<PolicyId>(DEFAULT_POLICY);
@@ -41,6 +43,14 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('home');
   // Guided tour over the game screen; null when it is not running.
   const [tourStep, setTourStep] = useState<number | null>(null);
+  // Right after the tour the first purchases are played with Inti.
+  const [focusStep, setFocusStep] = useState<number | null>(null);
+  // Products of that demo; fixed so they survive the purchases.
+  const [focusPlan, setFocusPlan] = useState<FocusPlan | null>(null);
+  // Product touched by mistake in the demo, taken off the shelf.
+  const [wrongTouch, setWrongTouch] = useState<number | null>(null);
+  // Changes on every focus move so Inti repeats a line seen before.
+  const [focusVisit, setFocusVisit] = useState(0);
   const freshTour = useRef(false);
   const [therapistOpen, setTherapistOpen] = useState(false);
   const [leaveOpen, setLeaveOpen] = useState(false);
@@ -55,21 +65,48 @@ export default function App() {
       ),
     [],
   );
-  const tourData = INTRO_STEPS[tourStep ?? 0];
-  const tourMessage = useMemo(
-    () => createMessage('inicio', tourData.text, `intro-${tourData.id}`),
-    [tourData],
+  const focusData = useMemo(
+    () => (focusPlan === null ? [] : focusSteps(focusPlan)),
+    [focusPlan],
   );
+  const guiding = tourStep !== null || focusStep !== null;
+  const tourData =
+    focusStep !== null
+      ? (focusData[focusStep] ?? INTRO_STEPS[0])
+      : INTRO_STEPS[tourStep ?? 0];
+  const tourMessage = useMemo(
+    () =>
+      createMessage(
+        'inicio',
+        tourData.text,
+        `intro-${tourData.id}-${focusVisit}`,
+      ),
+    [tourData, focusVisit],
+  );
+  // Demo level: the hints of the game (green / amber) shown by Inti.
+  const demoProducts: Demo | undefined = !guiding
+    ? undefined
+    : tourData.demo === 'list'
+      ? { ids: state.items_restantes, tone: 'target' }
+      : focusStep !== null
+        ? {
+            ids: tourData.hint?.ids ?? [],
+            tone: tourData.hint?.tone ?? 'target',
+            // From "voy quitando productos" on, the mistake is off the shelf.
+            hidden:
+              wrongTouch !== null &&
+              focusStep >= focusData.findIndex((s) => s.id === 'focus-remove')
+                ? [wrongTouch]
+                : [],
+          }
+        : undefined;
+  const touchable = focusStep !== null && tourData.touch !== undefined;
   const activeMessage =
-    screen === 'home'
-      ? homeMessage
-      : tourStep !== null
-        ? tourMessage
-        : state.mensaje;
+    screen === 'home' ? homeMessage : guiding ? tourMessage : state.mensaje;
   const speech = useSpeech(activeMessage);
 
   const idle = useIdleNudge(
-    screen === 'game' && tourStep === null && state.items_restantes.length > 0,
+    screen === 'game' && !guiding && state.items_restantes.length > 0,
     state.mensaje.id,
   );
   const gameLine: GuideLine = idle
@@ -106,15 +143,60 @@ export default function App() {
   function finishTour() {
     markSeen();
     setTourStep(null);
-    if (freshTour.current) {
-      // Tour time must not count as shopping time.
-      freshTour.current = false;
-      reset();
-    }
+    // First query, played with Inti: list, item, product on the shelf.
+    const [first, second] = state.items_restantes;
+    if (first === undefined) return finishFocus();
+    const named = (id: number) => ({ id, name: market.catalogo[id].nombre });
+    setFocusPlan({
+      first: named(first),
+      second: second === undefined ? undefined : named(second),
+      decoy: state.productos_visibles.find(
+        (id) =>
+          !state.items_restantes.includes(id) &&
+          !state.items_en_carrito.includes(id),
+      ),
+    });
+    setFocusStep(0);
+    setFocusVisit((visit) => visit + 1);
+  }
+  function startClock() {
+    if (!freshTour.current) return;
+    // Tour time must not count as shopping time.
+    freshTour.current = false;
+    reset();
+  }
+  function goFocus(index: number) {
+    // The first touch starts the shopping time.
+    if (focusData[index]?.touch !== undefined) startClock();
+    setFocusStep(index);
+    setFocusVisit((visit) => visit + 1);
+  }
+  function finishFocus() {
+    startClock();
+    setFocusStep(null);
+    setFocusPlan(null);
+    setWrongTouch(null);
     document.getElementById('mercado')?.focus({ preventScroll: true });
+  }
+  // While Inti waits for a touch: the asked product moves the demo on (and
+  // is bought for real when the step says so); a mistake in the demo is not
+  // counted, Inti explains the amber hint instead; other touches are ignored.
+  function chooseProductInGame(id: number) {
+    if (!touchable || focusStep === null) return choose(id);
+    if (id === tourData.touch) {
+      if (tourData.buys) choose(id);
+      else setWrongTouch(id);
+      goFocus(focusStep + 1);
+    } else if (tourData.onWrong) {
+      setWrongTouch(id);
+      goFocus(focusData.findIndex((step) => step.id === tourData.onWrong));
+    } else goFocus(focusStep); // Inti says it again
   }
   function replayTour() {
     setTherapistOpen(false);
+    setFocusStep(null);
+    setFocusPlan(null);
+    setWrongTouch(null);
     setTourStep(0);
   }
   function goHome() {
@@ -129,19 +211,20 @@ export default function App() {
         {skip.label}
       </a>
       {screen === 'game' ? (
-        <div className="market-app" inert={tourStep !== null}>
+        <div className="market-app" inert={guiding && !touchable}>
           <Header
             challenge={challenge}
             goHome={goHome}
             showGuide={replayTour}
           />
-          {tourStep === null && <GuideMascot line={gameLine} />}
+          {!guiding && <GuideMascot line={gameLine} />}
           <main className="market-layout">
             <MarketStall
               state={state}
-              choose={choose}
+              choose={chooseProductInGame}
               reset={reset}
               speech={speech}
+              demo={demoProducts}
             />
             <ShoppingPanels
               state={state}
@@ -172,10 +255,23 @@ export default function App() {
       )}
       {screen === 'game' && tourStep !== null && (
         <GameTour
+          steps={INTRO_STEPS}
           stepIndex={tourStep}
           setStepIndex={setTourStep}
           finish={finishTour}
           speech={speech}
+        />
+      )}
+      {screen === 'game' && focusStep !== null && focusData.length > 0 && (
+        <GameTour
+          key="focus"
+          steps={focusData}
+          stepIndex={focusStep}
+          setStepIndex={goFocus}
+          finish={finishFocus}
+          speech={speech}
+          autoAdvanceMs={FOCUS_ADVANCE_MS}
+          compact
         />
       )}
       <LeaveDialog

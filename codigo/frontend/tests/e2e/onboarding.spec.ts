@@ -57,7 +57,75 @@ test('primera visita: Inti presenta sobre el juego y la segunda va directo', asy
     await page.getByRole('button', { name: 'Siguiente' }).click();
   await expect(page.locator('#tour-heading')).toHaveText('¡A comprar!');
   await page.getByRole('button', { name: '¡A comprar!' }).click();
+  // First query, played with Inti: list -> list item -> product (green).
+  const heading = page.locator('#tour-heading');
+  await expect(heading).toHaveText('Primero, mira tu lista');
+  await expect(heading).toHaveText('Lo primero: pechuga de pollo');
+  await page.waitForTimeout(800); // let the spotlight move
+  await mkdir('artifacts', { recursive: true });
+  await page.screenshot({ path: 'artifacts/focus-1-list-item.png' });
+  await expect(heading).toHaveText('Busca: pechuga de pollo');
+  const product = page.locator('.product-card', {
+    hasText: 'PECHUGA DE POLLO',
+  });
+  await expect(product).toHaveClass(/target-hint/);
+  await page.waitForTimeout(800);
+  const spot = (await page.locator('.tour-spot').boundingBox())!;
+  const box = (await product.boundingBox())!;
+  expect(spot.x).toBeLessThanOrEqual(box.x);
+  expect(spot.y).toBeLessThanOrEqual(box.y);
+  expect(spot.x + spot.width).toBeGreaterThanOrEqual(box.x + box.width);
+  expect(spot.y + spot.height).toBeGreaterThanOrEqual(box.y + box.height);
+  await page.screenshot({ path: 'artifacts/focus-2-product.png' });
+  // The right touch: it goes to the cart, green, "¡Muy bien!".
+  await product.click();
+  await expect(heading).toHaveText('¡Muy bien!');
+  await expect(product).toHaveClass(/bought/);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-3-good.png' });
+  await page.getByRole('button', { name: 'Siguiente' }).click();
+  // The list shows the chicken in green, then the potato is next.
+  await expect(heading).toHaveText('Tu lista se actualiza');
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-4-list-done.png' });
+  await expect(heading).toHaveText('Ahora sigue: papa');
+  // A planned mistake: Inti marks a product that is not the potato.
+  await expect(heading).toHaveText('¿Y si te equivocas?');
+  const decoy = page.locator('.product-card.target-hint');
+  await expect(decoy).toHaveCount(1);
+  await expect(decoy).not.toContainText('PAPA');
+  const decoyName = (await decoy.locator('.product-name').textContent())!;
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-5-try-wrong.png' });
+  await decoy.click();
+  const papa = page.locator('.product-card', { hasText: 'PAPA' });
+  await expect(heading).toHaveText('Ese no es papa');
+  await expect(papa).toHaveClass(/category-hint/);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-6-wrong.png' });
+  await page.getByRole('button', { name: 'Siguiente' }).click();
+  await expect(heading).toHaveText('Si te equivocas, te ayudo');
+  await expect(
+    page.locator('.product-card', { hasText: decoyName }),
+  ).toHaveCount(0);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-7-remove.png' });
+  await page.getByRole('button', { name: 'Siguiente' }).click();
+  await expect(heading).toHaveText('Toca: papa');
+  await papa.click();
+  await expect(heading).toHaveText('¡Muy bien!');
+  await expect(papa).toHaveClass(/bought/);
+  await page.getByRole('button', { name: 'Siguiente' }).click();
+  await expect(heading).toHaveText('Las pistas cambian contigo');
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-8-board.png' });
+  await page.getByRole('button', { name: 'Siguiente' }).click();
+  await expect(heading).toHaveText('¡Ya estás listo!');
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'artifacts/focus-9-ready.png' });
+  await page.getByRole('button', { name: '¡A comprar!' }).click();
   await expect(page.locator('.tour')).toHaveCount(0);
+  await expect(page.getByText(/Tengo \d/)).toHaveText(/Tengo 4 de 8/);
   await page.reload();
   await page.getByRole('button', { name: 'EMPEZAR' }).click();
   await expect(page.locator('[data-product-id]')).toHaveCount(10);
@@ -73,6 +141,10 @@ test('el terapeuta puede repetir la presentación; Saltar la cierra', async ({
   await expect(page.locator('.tour')).toBeVisible();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#tour-heading')).toHaveText('Mira la lista');
+  await page.getByRole('button', { name: 'Saltar' }).click();
+  await expect(page.locator('#tour-heading')).toHaveText(
+    'Primero, mira tu lista',
+  );
   await page.getByRole('button', { name: 'Saltar' }).click();
   await expect(page.locator('.tour')).toHaveCount(0);
 });
@@ -160,7 +232,7 @@ for (const [width, height] of [
     const targets = [
       null,
       '.list-panel',
-      '.shelf-row',
+      '.shelves',
       '.instruction-board',
       '.wallet-panel',
     ];
@@ -194,7 +266,7 @@ for (const [width, height] of [
           target.x + target.width,
         );
         // Compact targets must stay uncovered by the dialog.
-        if (targets[step] !== '.shelf-row')
+        if (targets[step] !== '.shelves')
           expect(intersects(guide, target)).toBe(false);
       }
       expect(
