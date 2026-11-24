@@ -19,6 +19,8 @@
     "format:check": "prettier --check src tests scripts/*.mjs *.{json,ts} index.html README.md public/ASSETS.md"
   },
   "dependencies": {
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
     "lucide-react": "^0.468.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
