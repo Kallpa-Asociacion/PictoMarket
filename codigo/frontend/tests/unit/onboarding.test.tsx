@@ -10,6 +10,7 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../../src/App';
 import { INTRO_STEPS } from '../../src/content/intro';
+import { market } from '../../src/data/market';
 
 const voice = {
   name: 'Español local',
@@ -67,6 +68,13 @@ function selectRules() {
 }
 const nextStep = () => click('Siguiente');
 const tourTitle = () => document.getElementById('tour-heading');
+const tourStep = () =>
+  document.querySelector('.tour')?.getAttribute('data-step');
+// Saltar closes the guide; a second Saltar closes the focus on the list.
+const closeGuide = () => {
+  click('Saltar');
+  click('Saltar');
+};
 
 describe('presentación guiada sobre el juego', () => {
   it('no existe el botón de cómo se juega en la bienvenida', () => {
@@ -87,10 +95,124 @@ describe('presentación guiada sobre el juego', () => {
       expect(tourTitle()).toHaveTextContent(INTRO_STEPS[step].title);
     }
     click('¡A comprar!');
+    // First query, played with Inti: list, list item, product on the shelf.
+    expect(tourTitle()).toHaveTextContent('Primero, mira tu lista');
+    expect(document.querySelector('.market-app')).toHaveAttribute('inert');
+    nextStep();
+    expect(tourTitle()).toHaveTextContent('Lo primero: pechuga de pollo');
+    nextStep();
+    expect(tourTitle()).toHaveTextContent('Busca: pechuga de pollo');
+    // Inti waits for the touch: no "Siguiente", the shelf can be touched.
+    expect(screen.queryByRole('button', { name: 'Siguiente' })).toBeNull();
+    expect(document.querySelector('.market-app')).not.toHaveAttribute('inert');
+    buy('PECHUGA DE POLLO');
+    expect(tourTitle()).toHaveTextContent('¡Muy bien!');
+    // Siguiente until the end of the demo, touching what Inti asks.
+    for (let guard = 0; guard < 20 && tourStep(); guard++) {
+      const asked = document.querySelector<HTMLButtonElement>(
+        '.product-card.target-hint, .product-card.category-hint',
+      );
+      if (!screen.queryByRole('button', { name: /Siguiente|A comprar/ }))
+        fireEvent.click(asked!);
+      else if (tourStep() === 'focus-ready') click('¡A comprar!');
+      else nextStep();
+    }
     expect(tourTitle()).toBeNull();
     expect(document.querySelector('.market-app')).not.toHaveAttribute('inert');
     expect(localStorage.getItem('pictomarket.intro.seen')).toBe('1');
     expect(document.getElementById('mercado')).toHaveFocus();
+  });
+  it('nivel demo: guía, primera compra y un error a propósito', () => {
+    vi.useFakeTimers();
+    mount();
+    click('EMPEZAR');
+    const [pollo, papa] = market.retos[1].lista_correcta;
+    const list = [...market.retos[1].lista_correcta].sort();
+    const ids = (selector: string) =>
+      [...document.querySelectorAll(selector)]
+        .map((el) => Number(el.getAttribute('data-product-id')))
+        .sort();
+    const green = () => ids('.product-card.target-hint');
+    const amber = () => ids('.product-card.category-hint');
+    const shelf = () => ids('.product-card');
+    const wait = () => act(() => vi.advanceTimersByTime(3000));
+    nextStep();
+    expect(tourStep()).toBe('list');
+    expect(green()).toEqual([]);
+    nextStep();
+    expect(tourStep()).toBe('touch');
+    expect(green()).toEqual(list);
+    nextStep();
+    expect(green()).toEqual([]);
+    click('Saltar');
+    // List, list item, then the product on the shelf in green.
+    expect(tourStep()).toBe('focus-list');
+    wait();
+    expect(tourStep()).toBe('focus-item');
+    wait();
+    expect(tourStep()).toBe('focus-product');
+    expect(green()).toEqual([pollo]);
+    // Another product is ignored here: Inti keeps asking for the chicken.
+    buy('QUESO');
+    expect(tourStep()).toBe('focus-product');
+    buy('PECHUGA DE POLLO');
+    expect(tourStep()).toBe('focus-good');
+    expect(document.querySelector(`[data-product-id="${pollo}"]`)).toHaveClass(
+      'bought',
+    );
+    expect(document.querySelector('.tour-text')).toHaveTextContent(
+      'El verde significa que ya está en tu carrito.',
+    );
+    nextStep();
+    // The list already shows the chicken in green; next comes the potato.
+    expect(tourStep()).toBe('focus-list-done');
+    wait();
+    expect(tourStep()).toBe('focus-item-2');
+    expect(tourTitle()).toHaveTextContent('Ahora sigue: papa');
+    wait();
+    // "¿Y si te equivocas?": a product that is not on the list, in green.
+    expect(tourStep()).toBe('focus-try-wrong');
+    const [decoy] = green();
+    expect(list).not.toContain(decoy);
+    const total = shelf().length;
+    fireEvent.click(document.querySelector(`[data-product-id="${decoy}"]`)!);
+    // The mistake is not counted: amber on the potato, then fewer products.
+    expect(tourStep()).toBe('focus-wrong');
+    expect(amber()).toEqual([papa]);
+    expect(screen.getByText(/Tengo/)).toHaveTextContent('Tengo 5 de 8');
+    nextStep();
+    expect(tourStep()).toBe('focus-remove');
+    expect(shelf()).toHaveLength(total - 1);
+    expect(shelf()).not.toContain(decoy);
+    nextStep();
+    expect(tourStep()).toBe('focus-retry');
+    buy('PAPA');
+    expect(tourStep()).toBe('focus-good-2');
+    nextStep();
+    // The hint board, and then the child plays alone.
+    expect(tourStep()).toBe('focus-board');
+    expect(document.querySelector('.tour-text')).toHaveTextContent(
+      'el panel de pistas se actualiza mientras eliges',
+    );
+    nextStep();
+    expect(tourStep()).toBe('focus-ready');
+    expect(tourTitle()).toHaveTextContent('¡Ya estás listo!');
+    click('¡A comprar!');
+    expect(tourStep()).toBeUndefined();
+    // After the guide the shelf is the real one again.
+    expect(shelf()).toHaveLength(total);
+  });
+  it('durante la espera del toque, el resto del juego no responde', () => {
+    vi.useFakeTimers();
+    mount();
+    click('EMPEZAR');
+    click('Saltar');
+    act(() => vi.advanceTimersByTime(3000));
+    act(() => vi.advanceTimersByTime(3000));
+    expect(tourStep()).toBe('focus-product');
+    click('Panel del terapeuta');
+    expect(document.querySelector('dialog[open]')).toBeNull();
+    expect(tourStep()).toBe('focus-product');
   });
   it('segunda visita: EMPEZAR va directo al juego sin presentación', () => {
     localStorage.setItem('pictomarket.intro.seen', '1');
@@ -102,7 +224,7 @@ describe('presentación guiada sobre el juego', () => {
   it('Saltar cierra la presentación y la marca como vista', () => {
     mount();
     click('EMPEZAR');
-    click('Saltar');
+    closeGuide();
     expect(tourTitle()).toBeNull();
     expect(localStorage.getItem('pictomarket.intro.seen')).toBe('1');
   });
@@ -112,7 +234,7 @@ describe('presentación guiada sobre el juego', () => {
       mount();
       click('EMPEZAR');
       clock.mockReturnValue(90000);
-      click('Saltar');
+      closeGuide();
       clock.mockReturnValue(90150);
       buy('PECHUGA DE POLLO');
       click('Panel del terapeuta');
@@ -151,6 +273,8 @@ describe('presentación guiada sobre el juego', () => {
     expect(tourTitle()).toHaveFocus();
     fireEvent.keyDown(window, { key: 'ArrowLeft' });
     expect(tourTitle()).toHaveTextContent(INTRO_STEPS[0].title);
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(tourStep()).toBe('focus-list');
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(tourTitle()).toBeNull();
   });
