@@ -15,6 +15,8 @@ import { market } from '../data/market';
 import { objectiveWords, type GameState } from '../domain/game';
 import { POLICY_LABELS, type PolicyId, estimateProfile } from '../domain/policy';
 import { downloadSessionReport } from '../utils/pdf-report';
+import { SoundSettingsSection } from '../sound/SoundControls';
+import type { SoundSupport } from '../sound/useSound';
 
 const ACTION_LABELS: Record<string, string> = {
   a0: '—',
@@ -35,6 +37,7 @@ export function TherapistPanel({
   replayTour,
   policy,
   setPolicy,
+  sound,
 }: {
   open: boolean;
   close: () => void;
@@ -43,6 +46,7 @@ export function TherapistPanel({
   replayTour: () => void;
   policy: PolicyId;
   setPolicy: (policy: PolicyId) => void;
+  sound: SoundSupport;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
 
@@ -137,6 +141,8 @@ export function TherapistPanel({
             </label>
           </div>
         </section>
+
+        <SoundSettingsSection sound={sound} />
 
         {/* ——— ESTADÍSTICAS ——— */}
         <section className="therapist-section">

@@ -33,7 +33,25 @@ Cada ayuda también aparece como frase de pictogramas (por ejemplo `[MIRAR] + [A
 
 - Pulsa **Activar voz** (la voz nunca se activa sola).
 - Puedes repetir, detener y ajustar volumen y velocidad en **Ajustes de voz**.
+- Cuando la aplicación incluye las grabaciones de Inti, se usa **Inti (voz grabada)**. Funciona aunque el dispositivo no tenga voces en español. En *Ajustes de voz* se puede elegir otra voz.
 - Si el dispositivo no tiene voces en español, el juego sigue funcionando con texto y pictogramas.
+
+## Música y sonidos
+
+Cada parte tiene su propia música de fondo:
+
+| Parte | Música |
+|---|---|
+| Inicio | alegre, de bienvenida al mercado |
+| Juego | tranquila y sin percusión, para concentrarse |
+| Panel del terapeuta | ambiente muy lento, para leer |
+| Compra completada | festiva |
+
+- La música empieza con el primer toque (los navegadores no permiten sonido antes).
+- El botón de la nota musical, en la barra superior, la activa o la silencia.
+- Al comprar suena un aviso alegre; al equivocarse, una señal suave (nunca un zumbido de error).
+- La música baja sola mientras habla la voz y se detiene si se cambia de pestaña.
+- En el panel del terapeuta, **Música y sonidos** permite apagar la música o los efectos y ajustar el volumen. La elección queda guardada en el dispositivo. Si la persona es sensible al sonido, conviene apagarlos.
 
 ## 6. Panel del terapeuta
 

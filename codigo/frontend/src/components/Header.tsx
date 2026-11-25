@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { publicAsset } from '../data/market';
 import { objectiveWords, type Challenge } from '../domain/game';
+import { SoundToggle } from '../sound/SoundControls';
+import type { SoundSupport } from '../sound/useSound';
 
 export function ObjectiveChips({
   challenge,
@@ -51,10 +53,12 @@ export function Header({
   challenge,
   goHome,
   showGuide,
+  sound,
 }: {
   challenge?: Challenge;
   goHome?: () => void;
   showGuide?: () => void;
+  sound?: SoundSupport;
 }) {
   return (
     <header className="topbar">
@@ -73,27 +77,32 @@ export function Header({
           PICTO<span className="brand-accent">MARKET</span>
         </span>
       </a>
-      {goHome && (
-        <button
-          type="button"
-          className="home-button"
-          onClick={goHome}
-          aria-label="Volver al inicio"
-        >
-          <House aria-hidden="true" />
-          <span aria-hidden="true">Inicio</span>
-        </button>
-      )}
-      {showGuide && (
-        <button
-          type="button"
-          className="home-button guide-button"
-          onClick={showGuide}
-          aria-label="Ver la presentación de Inti"
-        >
-          <CircleHelp aria-hidden="true" />
-          <span aria-hidden="true">Guía</span>
-        </button>
+      {(goHome || showGuide || sound) && (
+        <div className="topbar-actions">
+          {goHome && (
+            <button
+              type="button"
+              className="home-button"
+              onClick={goHome}
+              aria-label="Volver al inicio"
+            >
+              <House aria-hidden="true" />
+              <span aria-hidden="true">Inicio</span>
+            </button>
+          )}
+          {showGuide && (
+            <button
+              type="button"
+              className="home-button guide-button"
+              onClick={showGuide}
+              aria-label="Ver la presentación de Inti"
+            >
+              <CircleHelp aria-hidden="true" />
+              <span aria-hidden="true">Guía</span>
+            </button>
+          )}
+          {sound && <SoundToggle sound={sound} />}
+        </div>
       )}
       {challenge && <ObjectiveChips challenge={challenge} />}
       <img
