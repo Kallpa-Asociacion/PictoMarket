@@ -201,7 +201,7 @@ Para gastar lo mínimo se graba **por oración**: «¡Muy bien!» o «Ahora busc
 
 ### Grabar
 
-1. Copia `.env.example` a `.env.local` (Git lo ignora) y completa `ELEVENLABS_API_KEY` y `ELEVENLABS_VOICE_ID`. **Nunca** commitees la clave.
+1. Copia `.env.example` a `.env.local` (o usa `codigo/.env`; Git ignora ambos) y completa `ELEVENLABS_API_KEY` y `ELEVENLABS_VOICE_ID`. **Nunca** commitees la clave.
 2. `npm run voz:lista`: muestra lo pendiente y los caracteres, sin gastar nada. Deja la lista en `artifacts/frases-voz.csv`.
 3. Prueba primero con poco: `npm run voz:grabar -- --max-chars=150`, escucha y, si la voz convence, `npm run voz:grabar`.
 4. Commitea `public/audio/inti/` y `src/voice/manifest.json`.

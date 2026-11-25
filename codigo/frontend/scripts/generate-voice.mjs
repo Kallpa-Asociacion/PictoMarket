@@ -7,7 +7,8 @@
 //
 // Options: --max-chars=500  stop before spending more than that
 //          --force          record everything again (for a new voice)
-// Credentials: codigo/frontend/.env.local (see .env.example). Never commit it.
+// Credentials: codigo/frontend/.env.local or codigo/.env (see .env.example).
+// Git ignores both. Never commit them.
 
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -31,10 +32,13 @@ const maxCharacters = limit ? Number(limit.split('=')[1]) : Infinity;
 if (Number.isNaN(maxCharacters))
   throw new Error('--max-chars debe ser un número.');
 
-try {
-  process.loadEnvFile(new URL('../.env.local', import.meta.url));
-} catch {
-  // Optional: the variables may already be in the environment.
+// frontend/.env.local or codigo/.env; the first value found wins.
+for (const file of ['../.env.local', '../../.env']) {
+  try {
+    process.loadEnvFile(new URL(file, import.meta.url));
+  } catch {
+    // Optional: the variables may already be in the environment.
+  }
 }
 
 /** The sentences come from the game's own code (single source of truth). */
