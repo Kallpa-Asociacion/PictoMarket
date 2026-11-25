@@ -69,10 +69,18 @@ export function voiceText(text: string): string {
     .trim()
     .toLowerCase();
 }
+// crypto.randomUUID solo existe en contextos seguros (HTTPS/localhost); en
+// http://<IP-LAN> es undefined, así que se cae a un id local equivalente.
+function newId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
 export function createMessage(
   tipo: Message['tipo'],
   texto: string,
-  id: string = crypto.randomUUID(),
+  id: string = newId(),
 ): Message {
   return { id, tipo, texto, texto_voz: voiceText(texto) };
 }

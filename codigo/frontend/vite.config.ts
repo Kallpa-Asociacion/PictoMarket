@@ -6,6 +6,7 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   server: {
+    host: true,
     port: 5173,
     strictPort: true,
     fs: { allow: ['.', '../../datos'] },

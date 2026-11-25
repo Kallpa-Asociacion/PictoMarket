@@ -18,9 +18,10 @@ build/
 # Streamlit
 .streamlit/secrets.toml
 
-# IDEs
+# IDEs y cache de herramientas locales
 .vscode/
 .idea/
+.atl/
 *.sublime-project
 *.sublime-workspace
 

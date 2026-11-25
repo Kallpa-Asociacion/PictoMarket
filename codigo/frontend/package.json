@@ -7,9 +7,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
+    "dev": "vite --host",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --host 127.0.0.1",
+    "preview": "vite preview --host",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/run-vitest.mjs run && node --test tests/speech-controller.test.mjs",
     "test:watch": "node scripts/run-vitest.mjs",
