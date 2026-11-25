@@ -181,3 +181,14 @@ La migración aparta Python y Streamlit del frontend activo sin destruir su refe
 ## Créditos
 
 Pictogramas: **Sergio Palao · ARASAAC · Gobierno de Aragón · CC BY-NC-SA**. Proyecto académico de Inteligencia Artificial y Educación Especial. Nunito: SIL Open Font License. Consulta la procedencia del arte y la marca en [`codigo/frontend/public/ASSETS.md`](public/ASSETS.md).
+
+## Módulo de sonido (`src/sound/`)
+
+| Archivo | Rol |
+|---|---|
+| `tracks.ts` | Cuatro pistas originales escritas como datos: `home`, `game`, `therapist`, `celebration` |
+| `engine.ts` | Sintetizador Web Audio: bucle, fundido entre pistas, atenuación con la voz y efectos |
+| `useSound.ts` | Preferencias (`localStorage` `pictomarket.sound`), desbloqueo con el primer gesto y pausa en segundo plano |
+| `SoundControls.tsx` | Botón de música de la barra y ajustes del panel del terapeuta |
+
+No hay archivos de audio ni dependencias nuevas, así que no hay licencias que atribuir y funciona sin red. Para cambiar la música se editan las notas de `tracks.ts` (`[pulso, nota MIDI, duración]`). `tests/e2e/sound.spec.ts` mide en Chrome que cada pista suene sin saturar.

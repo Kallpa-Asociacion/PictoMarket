@@ -2,6 +2,7 @@ import { ChevronRight, Heart, Leaf } from 'lucide-react';
 import { publicAsset } from '../data/market';
 import type { GuideLine } from '../domain/guide';
 import type { SpeechSupport } from '../hooks/useSpeech';
+import type { SoundSupport } from '../sound/useSound';
 import { Header } from './Header';
 import { SpeechBubble } from './SpeechBubble';
 import './welcome.css';
@@ -11,16 +12,18 @@ export function WelcomeScreen({
   openTherapist,
   speech,
   line,
+  sound,
 }: {
   start: () => void;
   openTherapist: () => void;
   speech: SpeechSupport;
   line: GuideLine;
+  sound: SoundSupport;
 }) {
   return (
     <div className="welcome-screen">
       <div className="welcome-shell">
-        <Header />
+        <Header sound={sound} />
         <main className="welcome-main" id="bienvenida" tabIndex={-1}>
           <div className="welcome-scene">
             <div className="welcome-chalkboard learn-board" aria-hidden="true">

@@ -21,6 +21,8 @@ import { useGame } from './hooks/useGame';
 import { useIdleNudge } from './hooks/useIdleNudge';
 import { useIntroSeen } from './hooks/useIntroSeen';
 import { useSpeech } from './hooks/useSpeech';
+import type { TrackId } from './sound/tracks';
+import { useSound } from './sound/useSound';
 
 type Screen = 'home' | 'game';
 
@@ -104,6 +106,23 @@ export default function App() {
   const activeMessage =
     screen === 'home' ? homeMessage : guiding ? tourMessage : state.mensaje;
   const speech = useSpeech(activeMessage);
+  // Each part of the app has its own music.
+  const track: TrackId = therapistOpen
+    ? 'therapist'
+    : screen === 'home'
+      ? 'home'
+      : state.items_restantes.length === 0
+        ? 'celebration'
+        : 'game';
+  const sound = useSound(track, speech.snapshot.speaking);
+  const heardEvents = useRef(0);
+  useEffect(() => {
+    const events = state.log_eventos;
+    // Only new events make a sound (a reset empties the log).
+    if (events.length > heardEvents.current)
+      sound.effect(events[events.length - 1].correcto ? 'success' : 'hint');
+    heardEvents.current = events.length;
+  }, [state.log_eventos]);
 
   const idle = useIdleNudge(
     screen === 'game' && !guiding && state.items_restantes.length > 0,
@@ -216,6 +235,7 @@ export default function App() {
             challenge={challenge}
             goHome={goHome}
             showGuide={replayTour}
+            sound={sound}
           />
           {!guiding && <GuideMascot line={gameLine} />}
           <main className="market-layout">
@@ -243,6 +263,7 @@ export default function App() {
         </div>
       ) : (
         <WelcomeScreen
+          sound={sound}
           start={begin}
           openTherapist={() => setTherapistOpen(true)}
           speech={speech}
@@ -290,6 +311,7 @@ export default function App() {
         replayTour={replayTour}
         policy={policyId}
         setPolicy={setPolicyId}
+        sound={sound}
       />
     </>
   );
