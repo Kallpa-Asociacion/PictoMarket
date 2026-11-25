@@ -33,6 +33,7 @@ Cada ayuda también aparece como frase de pictogramas (por ejemplo `[MIRAR] + [A
 
 - Pulsa **Activar voz** (la voz nunca se activa sola).
 - Puedes repetir, detener y ajustar volumen y velocidad en **Ajustes de voz**.
+- Cuando la aplicación incluye las grabaciones de Inti, se usa **Inti (voz grabada)**. Funciona aunque el dispositivo no tenga voces en español. En *Ajustes de voz* se puede elegir otra voz.
 - Si el dispositivo no tiene voces en español, el juego sigue funcionando con texto y pictogramas.
 
 ## Música y sonidos

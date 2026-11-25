@@ -9,8 +9,9 @@ import { TherapistPanel } from './components/TherapistPanel';
 import { VoiceControls } from './components/VoiceControls';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { INTRO_STEPS, focusSteps, type FocusPlan } from './content/intro';
+import { DIALOGUE } from './domain/dialogue';
 import { createMessage } from './domain/game';
-import { GUIDE_NAME, guideLineFromGame, type GuideLine } from './domain/guide';
+import { guideLineFromGame, type GuideLine } from './domain/guide';
 import { market } from './data/market';
 import {
   createHelpPolicy,
@@ -59,12 +60,7 @@ export default function App() {
 
   // A single active message drives the voice, whatever screen is showing.
   const homeMessage = useMemo(
-    () =>
-      createMessage(
-        'inicio',
-        `¡Hola! Soy ${GUIDE_NAME}. Toca EMPEZAR para jugar.`,
-        'home-welcome',
-      ),
+    () => createMessage('inicio', DIALOGUE.home, 'home-welcome'),
     [],
   );
   const focusData = useMemo(
@@ -270,7 +266,7 @@ export default function App() {
           line={{
             id: homeMessage.id,
             mood: 'greet',
-            text: `¡Hola! Soy ${GUIDE_NAME}. Toca EMPEZAR para jugar.`,
+            text: DIALOGUE.home,
           }}
         />
       )}

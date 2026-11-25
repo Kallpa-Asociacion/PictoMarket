@@ -6,7 +6,13 @@ import {
   type SpeechSettings,
   type SpeechSnapshot,
 } from '../audio/speech-controller.mjs';
+import { publicAsset } from '../data/market';
 import type { Message } from '../domain/game';
+import voiceManifest from '../voice/manifest.json';
+import {
+  RECORDED_VOICE_URI,
+  createRecordedVoice,
+} from '../voice/recordedVoice';
 
 const emptySnapshot: SpeechSnapshot = {
   supported: false,
@@ -24,11 +30,20 @@ export function useSpeech(message: Message) {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
-    const synth = window.speechSynthesis;
+    // Inti's recordings when they exist; otherwise the browser voice.
+    const { recorded, synth, Utterance } = createRecordedVoice({
+      base: window.speechSynthesis,
+      Utterance: window.SpeechSynthesisUtterance,
+      clips: voiceManifest.clips,
+      urlFor: (file) => publicAsset(`audio/inti/${file}`),
+    });
     const runtime = createSpeechController({
       synth,
-      Utterance: window.SpeechSynthesisUtterance,
-      settings: preferences.current,
+      Utterance,
+      settings: {
+        ...(recorded ? { voiceURI: RECORDED_VOICE_URI } : {}),
+        ...preferences.current,
+      },
       isVisible: () => !document.hidden,
       onStatus: () => setSnapshot(runtime.snapshot()),
     });

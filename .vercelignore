@@ -4,3 +4,5 @@ codigo/frontend/node_modules
 codigo/frontend/dist
 venv
 .venv
+**/.env
+**/.env.local

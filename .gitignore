@@ -57,3 +57,8 @@ entrega/
 
 # Curva de convergencia completa (15 MB, se regenera con entrenar_y_evaluar.py)
 datos/simulaciones/convergencia_qlearning.csv
+
+# Secretos locales (API keys). Solo se versiona el ejemplo.
+.env
+.env.*
+!.env.example

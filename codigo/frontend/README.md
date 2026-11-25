@@ -192,3 +192,28 @@ Pictogramas: **Sergio Palao · ARASAAC · Gobierno de Aragón · CC BY-NC-SA**. 
 | `SoundControls.tsx` | Botón de música de la barra y ajustes del panel del terapeuta |
 
 No hay archivos de audio ni dependencias nuevas, así que no hay licencias que atribuir y funciona sin red. Para cambiar la música se editan las notas de `tracks.ts` (`[pulso, nota MIDI, duración]`). `tests/e2e/sound.spec.ts` mide en Chrome que cada pista suene sin saturar.
+
+## Voz de Inti: se graba una vez con ElevenLabs
+
+El juego **nunca llama a ElevenLabs**. Los audios se graban una sola vez, se guardan en `public/audio/inti/`, se commitean y la aplicación solo los reproduce.
+
+Para gastar lo mínimo se graba **por oración**: «¡Muy bien!» o «Ahora busca: leche.» se pagan una vez y se combinan al reproducir. Hoy son 102 oraciones (unos 2 400 caracteres).
+
+### Grabar
+
+1. Copia `.env.example` a `.env.local` (Git lo ignora) y completa `ELEVENLABS_API_KEY` y `ELEVENLABS_VOICE_ID`. **Nunca** commitees la clave.
+2. `npm run voz:lista`: muestra lo pendiente y los caracteres, sin gastar nada. Deja la lista en `artifacts/frases-voz.csv`.
+3. Prueba primero con poco: `npm run voz:grabar -- --max-chars=150`, escucha y, si la voz convence, `npm run voz:grabar`.
+4. Commitea `public/audio/inti/` y `src/voice/manifest.json`.
+
+El script solo pide lo que falta, guarda después de cada oración y se detiene en el primer error (por ejemplo, cuota agotada): al repetirlo no se vuelve a pagar. Para cambiar de voz: `npm run voz:grabar -- --force` (graba todo de nuevo).
+
+**Grabación manual** (desde la web de ElevenLabs): guarda cada audio en `public/audio/inti/` con el nombre de la columna `archivo` del CSV y ejecuta `npm run voz:sync`.
+
+### Editar diálogos
+
+Las frases del juego están en `src/domain/dialogue.ts` y las de la presentación en `src/content/intro.ts`. Cambiar una oración solo obliga a grabar esa oración. Los archivos que dejan de usarse se listan al ejecutar `voz:lista`.
+
+### Comportamiento
+
+Si falta la grabación de alguna oración, **todo el mensaje** lo lee la voz del navegador (para no mezclar dos voces). Sin grabaciones, la app funciona como antes. Con grabaciones aparece «Inti (voz grabada)» como voz predeterminada en *Ajustes de voz*, incluso en equipos sin voces en español.

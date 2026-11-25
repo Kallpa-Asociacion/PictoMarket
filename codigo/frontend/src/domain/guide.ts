@@ -1,3 +1,4 @@
+import { praise } from './dialogue';
 import type { GameState } from './game';
 
 // Single place to rename the guide character.
@@ -48,7 +49,9 @@ export function guideLineFromGame(state: GameState): GuideLine {
     return {
       id: mensaje.id,
       mood: 'celebrate',
-      text: state.items_restantes.length ? '¡Muy bien!' : '¡Compraste todo!',
+      text: state.items_restantes.length
+        ? praise(state.items_en_carrito.length)
+        : '¡Compraste todo!',
       autoHide: true,
     };
   const action = state.log_eventos.at(-1)?.accion_agente;

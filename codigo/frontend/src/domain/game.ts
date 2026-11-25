@@ -1,3 +1,5 @@
+import { DIALOGUE } from './dialogue';
+
 export interface Product {
   nombre: string;
   categoria: string;
@@ -112,7 +114,10 @@ export function startGame(
     log_eventos: [],
     mensaje: createMessage(
       'inicio',
-      `¡Hola! Vamos a ${objectiveWords(challenge).join(' ').toLowerCase()}. Busca: ${data.catalogo[challenge.lista_correcta[0]].nombre.toLowerCase()}.`,
+      DIALOGUE.start(
+        objectiveWords(challenge).at(-1)!.toLowerCase(),
+        data.catalogo[challenge.lista_correcta[0]].nombre.toLowerCase(),
+      ),
     ),
   };
 }
@@ -174,7 +179,11 @@ export function chooseProduct(
     const following = next.items_restantes[0];
     next.mensaje = createMessage(
       'exito',
-      `¡Muy bien! ${name} va al carrito. ${following ? `Ahora busca: ${data.catalogo[following].nombre.toLowerCase()}.` : '¡Lo lograste! Compraste todo.'}`,
+      DIALOGUE.bought(
+        next.items_en_carrito.length,
+        name,
+        following ? data.catalogo[following].nombre.toLowerCase() : undefined,
+      ),
     );
   } else {
     next.intentos_fallidos = state.intentos_fallidos + 1;
@@ -198,11 +207,16 @@ export function chooseProduct(
       state.nivel_pista,
       { a1: 1, a2: 2, a3: 3, a4: 0 }[action],
     );
+    const wanted = data.catalogo[target].nombre.toLowerCase();
     const messages = {
-      a1: `${name} no está en la lista. Busca en ${category.icono} ${category.nombre.toLowerCase()}.`,
-      a2: 'Quité un producto para ayudarte. ¡Tú puedes!',
-      a3: `Mira 👇 aquí está ${data.catalogo[target].nombre.toLowerCase()}.`,
-      a4: `${name} no está en la lista. Inténtalo otra vez. Busca: ${data.catalogo[target].nombre.toLowerCase()}.`,
+      a1: DIALOGUE.categoryHint(
+        name,
+        category.icono,
+        category.nombre.toLowerCase(),
+      ),
+      a2: DIALOGUE.removedProduct(wanted),
+      a3: DIALOGUE.pointing(wanted),
+      a4: DIALOGUE.tryAgain(wanted),
     };
     next.mensaje = createMessage('pista', messages[action]);
   }
