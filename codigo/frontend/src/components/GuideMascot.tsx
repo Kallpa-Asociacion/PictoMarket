@@ -1,69 +1,55 @@
 import { useEffect, useState } from 'react';
-import { publicAsset } from '../data/market';
-import { GUIDE_NAME, MOOD_BADGE, type GuideLine } from '../domain/guide';
-import type { SpeechSupport } from '../hooks/useSpeech';
+import { GUIDE_NAME, type GuideLine } from '../domain/guide';
+import { IntiCharacter } from '../guide/IntiCharacter';
+import { poseFor } from '../guide/poses';
 import { SpeechBubble } from './SpeechBubble';
 
 const AUTO_HIDE_MS = 6000;
-
-// Keeps `--topbar-height` in sync with the real top bar so the fixed guide
-// never covers the logo, whatever the breakpoint.
-function useTopbarHeight() {
-  useEffect(() => {
-    const topbar = document.querySelector('.topbar');
-    if (!topbar) return;
-    const apply = () =>
-      document.documentElement.style.setProperty(
-        '--topbar-height',
-        `${Math.round(topbar.getBoundingClientRect().bottom + window.scrollY)}px`,
-      );
-    apply();
-    window.addEventListener('resize', apply);
-    const observer =
-      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(apply);
-    observer?.observe(topbar);
-    return () => {
-      window.removeEventListener('resize', apply);
-      observer?.disconnect();
-    };
-  }, []);
-}
+// On phones Inti steps back sooner so more products show.
+const SETTLE_MS = 3500;
 
 interface Props {
   line: GuideLine;
-  speech?: SpeechSupport;
-  /** True when the bubble is the screen-reader region (intro). */
-  live?: boolean;
+  /** The voice is sounding right now. */
+  speaking?: boolean;
+  /** The voice reads this line, so the mouth follows it. */
+  voiceOn?: boolean;
+  /** The shopping list is complete. */
+  complete?: boolean;
 }
 
-export function GuideMascot({ line, speech, live = false }: Props) {
-  useTopbarHeight();
-  // Success and greeting bubbles shrink to the portrait after a few seconds;
-  // tapping the portrait brings the last bubble back.
+export function GuideMascot({
+  line,
+  speaking = false,
+  voiceOn = false,
+  complete = false,
+}: Props) {
+  // Success and greeting balloons close after a while; tapping the peeking
+  // Inti brings the last one back.
   const [hiddenId, setHiddenId] = useState<string | null>(null);
   const [replays, setReplays] = useState(0);
   useEffect(() => {
-    if (!line.autoHide) return;
+    if (!line.autoHide || complete) return;
     const timer = setTimeout(() => setHiddenId(line.id), AUTO_HIDE_MS);
     return () => clearTimeout(timer);
-  }, [line.id, line.autoHide, replays]);
+  }, [line.id, line.autoHide, complete, replays]);
   const collapsed = hiddenId === line.id;
+  const [settledId, setSettledId] = useState<string | null>(null);
+  useEffect(() => {
+    const timer = setTimeout(() => setSettledId(line.id), SETTLE_MS);
+    return () => clearTimeout(timer);
+  }, [line.id, replays]);
+  const settled = settledId === line.id && !complete;
   return (
+    // The same words are in the instruction board, which is the live region.
     <aside
-      className={`guide-mascot guide-game`}
-      aria-label={live ? `Guía ${GUIDE_NAME}` : undefined}
-      {...(live ? {} : { 'aria-hidden': true })}
+      className={`guide-mascot guide-corner side-right ${collapsed ? 'is-peeking' : ''} ${settled ? 'is-settled' : ''}`}
+      data-guide={GUIDE_NAME}
+      aria-hidden="true"
     >
       {!collapsed && (
-        <SpeechBubble
-          line={line}
-          tail="right"
-          live={live}
-          speech={speech}
-          className="guide-speech"
-        />
+        <SpeechBubble line={line} tail="bottom" className="guide-speech" />
       )}
-      {/* Pointer-only affordance: the same text lives in the instruction board. */}
       <div
         className="guide-portrait-frame"
         onClick={() => {
@@ -71,15 +57,14 @@ export function GuideMascot({ line, speech, live = false }: Props) {
           setReplays((count) => count + 1);
         }}
       >
-        <div key={line.id} className="guide-figure" data-mood={line.mood}>
-          <img
-            className="guide-image"
-            src={publicAsset('art/guide.webp')}
-            alt=""
-            draggable="false"
-          />
-          <span className="guide-badge">{MOOD_BADGE[line.mood]}</span>
-        </div>
+        <IntiCharacter
+          lineId={line.id}
+          text={line.text}
+          mood={line.mood}
+          gesture={poseFor(line.mood, { complete })}
+          speaking={speaking}
+          voiceOn={voiceOn}
+        />
       </div>
     </aside>
   );

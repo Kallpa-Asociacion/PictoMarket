@@ -7,75 +7,21 @@ import {
 } from 'react';
 import { ChevronLeft, ChevronRight, Volume2 } from 'lucide-react';
 import type { IntroStep } from '../content/intro';
-import { publicAsset } from '../data/market';
-import { MOOD_BADGE } from '../domain/guide';
+import { IntiCharacter } from '../guide/IntiCharacter';
+import { poseFor } from '../guide/poses';
+import { placeTour, type TourLayout } from '../guide/tourLayout';
 import type { SpeechSupport } from '../hooks/useSpeech';
 import './tour.css';
 
-const GAP = 16;
-const MARGIN = 12;
-const PAD = 10;
-
-interface Layout {
-  spot: { x: number; y: number; w: number; h: number };
-  card: { x: number; y: number };
-}
-
-type Box = { x: number; y: number; w: number; h: number };
-const overlap = (a: Box, b: DOMRect) =>
-  Math.max(0, Math.min(a.x + a.w, b.right) - Math.max(a.x, b.left)) *
-  Math.max(0, Math.min(a.y + a.h, b.bottom) - Math.max(a.y, b.top));
-
-// Where the spotlight and Inti go for a target rect (viewport coordinates).
-// `avoid`: rects Inti should not cover (e.g. the products of the demo).
-function place(
-  target: DOMRect | null,
-  width: number,
-  height: number,
-  avoid: DOMRect[] = [],
-): Layout {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const clampX = (x: number) =>
-    Math.min(Math.max(MARGIN, x), Math.max(MARGIN, vw - width - MARGIN));
-  const clampY = (y: number) =>
-    Math.min(Math.max(MARGIN, y), Math.max(MARGIN, vh - height - MARGIN));
-  if (!target)
-    return {
-      spot: { x: vw / 2, y: vh / 2, w: 0, h: 0 },
-      card: { x: clampX((vw - width) / 2), y: clampY((vh - height) / 2) },
-    };
-  const spot = {
-    x: target.left - PAD,
-    y: target.top - PAD,
-    w: target.width + PAD * 2,
-    h: target.height + PAD * 2,
-  };
-  const x = clampX(target.left + target.width / 2 - width / 2);
-  const below = spot.y + spot.h + GAP;
-  const above = spot.y - GAP - height;
-  let y: number;
-  if (below + height <= vh - MARGIN) y = below;
-  else if (above >= MARGIN) y = above;
-  else y = clampY(vh - height - MARGIN); // big target: sit at the bottom edge
-  if (!avoid.length) return { spot, card: { x, y } };
-  // Try the usual spot first, then the screen corners; keep the least covering.
-  const options = [
-    { x, y },
-    ...[clampY(vh - height - MARGIN), MARGIN].flatMap((cy) =>
-      [x, MARGIN, clampX(vw)].map((cx) => ({ x: cx, y: cy })),
-    ),
-  ];
-  const covered = (card: { x: number; y: number }) =>
-    avoid.reduce(
-      (sum, rect) => sum + overlap({ ...card, w: width, h: height }, rect),
-      0,
-    );
-  const card = options.reduce((best, option) =>
-    covered(option) < covered(best) ? option : best,
-  );
-  return { spot, card };
-}
+// On phones the explained element goes to the top, leaving room below for the
+// balloon and Inti.
+const PHONE_WIDTH = 720;
+const box = (rect: DOMRect) => ({
+  x: rect.left,
+  y: rect.top,
+  w: rect.width,
+  h: rect.height,
+});
 
 export function GameTour({
   steps,
@@ -99,8 +45,9 @@ export function GameTour({
   const step = steps[stepIndex];
   const last = stepIndex === steps.length - 1;
   const card = useRef<HTMLDivElement>(null);
+  const inti = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
-  const [layout, setLayout] = useState<Layout | null>(null);
+  const [layout, setLayout] = useState<TourLayout | null>(null);
   const latest = useRef({ steps, stepIndex, setStepIndex, finish });
   latest.current = { steps, stepIndex, setStepIndex, finish };
 
@@ -131,22 +78,34 @@ export function GameTour({
 
   const measure = useCallback(() => {
     const el = step.target ? document.querySelector(step.target) : null;
-    const rect = el ? el.getBoundingClientRect() : null;
-    const box = card.current?.getBoundingClientRect();
     const avoid = step.avoid
       ? [...document.querySelectorAll(step.avoid)].map((item) =>
-          item.getBoundingClientRect(),
+          box(item.getBoundingClientRect()),
         )
       : [];
-    setLayout(place(rect, box?.width ?? 360, box?.height ?? 200, avoid));
+    // Layout size: unaffected by the walking transform.
+    const size = (node: HTMLElement | null, w: number, h: number) => ({
+      w: node?.offsetWidth || w,
+      h: node?.offsetHeight || h,
+    });
+    setLayout(
+      placeTour({
+        target: el ? box(el.getBoundingClientRect()) : null,
+        card: size(card.current, 360, 200),
+        inti: size(inti.current, 300, 244),
+        view: { w: window.innerWidth, h: window.innerHeight },
+        avoid,
+      }),
+    );
   }, [step]);
 
   // Bring the target into view before measuring, so the walk ends on screen.
   useLayoutEffect(() => {
     if (step.target)
-      document
-        .querySelector(step.target)
-        ?.scrollIntoView?.({ block: 'center', inline: 'nearest' });
+      document.querySelector(step.target)?.scrollIntoView?.({
+        block: window.innerWidth <= PHONE_WIDTH ? 'start' : 'center',
+        inline: 'nearest',
+      });
     measure();
   }, [step, measure]);
   // The card height depends on the text: measure again once it is rendered.
@@ -218,6 +177,28 @@ export function GameTour({
         }
       />
       <div
+        className={`tour-inti ${layout?.mirror ? 'side-right' : 'side-left'}`}
+        ref={inti}
+        aria-hidden="true"
+        style={
+          layout
+            ? { transform: `translate(${layout.inti.x}px, ${layout.inti.y}px)` }
+            : { opacity: 0 }
+        }
+      >
+        <IntiCharacter
+          lineId={step.id}
+          text={step.text}
+          mood={step.mood}
+          gesture={poseFor(step.mood, {
+            pointing: Boolean(step.target),
+            complete: step.id === 'focus-ready',
+          })}
+          speaking={speech.snapshot.speaking}
+          voiceOn={enabled}
+        />
+      </div>
+      <div
         className="tour-guide"
         ref={card}
         style={{
@@ -227,22 +208,7 @@ export function GameTour({
             : 'translate(-9999px, 0)',
         }}
       >
-        <div
-          key={step.id}
-          className="guide-figure tour-figure"
-          data-mood={step.mood}
-        >
-          <img
-            className="guide-image"
-            src={publicAsset('art/guide.webp')}
-            alt=""
-            draggable="false"
-          />
-          <span className="guide-badge" aria-hidden="true">
-            {MOOD_BADGE[step.mood]}
-          </span>
-        </div>
-        <div className="tour-bubble speech-bubble tail-left">
+        <div className="tour-bubble speech-bubble">
           {!compact && (
             <ol
               className="tour-progress"

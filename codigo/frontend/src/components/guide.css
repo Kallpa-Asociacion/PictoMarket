@@ -1,64 +1,8 @@
-/* Guide mascot (Inti) and speech bubbles. Animations only use transform and
-   opacity; the global prefers-reduced-motion block in styles.css turns them off. */
+/* Speech bubbles and the game guide in a bottom corner (see guide/inti.css for
+   the character). Animations only use transform and opacity; the global
+   prefers-reduced-motion block in styles.css turns them off. */
 :root {
-  --topbar-height: 116px;
-  --app-width: min(1320px, calc(100vw - 48px));
-  --guide-size: 104px;
-  --bubble-max: 160px;
-}
-
-.guide-mascot {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 14px;
-  pointer-events: none;
-}
-.guide-mascot > * {
-  pointer-events: auto;
-}
-
-/* Portrait: wooden frame, same warm borders as the instruction board. */
-.guide-portrait-frame {
-  flex: 0 0 var(--guide-size);
-  width: var(--guide-size);
-  height: var(--guide-size);
-  cursor: pointer;
-}
-.guide-figure {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-origin: 50% 90%;
-}
-.guide-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 12%;
-  border-radius: 50%;
-  border: 5px solid #c78a45;
-  background: #ffe6b6;
-  box-shadow:
-    inset 0 0 0 3px #ffebbd,
-    0 4px 0 #986136,
-    0 8px 12px #603c3040;
-}
-.guide-badge {
-  position: absolute;
-  right: -6px;
-  bottom: -4px;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  font-size: 22px;
-  line-height: 1;
-  background: var(--paper);
-  border: 3px solid #efd7a5;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px #603c3040;
+  --bubble-max: 280px;
 }
 
 /* Speech bubble. */
@@ -142,119 +86,84 @@
   background: #fff0cd;
 }
 
-/* Placement. Desktop: fixed top-right, under the top bar. Smaller screens:
-   in the page flow so it never covers products while scrolling. */
-.guide-mascot {
-  width: calc(100% - 24px);
-  margin: -8px auto 14px;
-  --guide-size: 72px;
-  --bubble-max: min(calc(100vw - 150px), 340px);
+.tail-bottom::before,
+.tail-bottom::after {
+  bottom: -23px;
 }
-.guide-mascot .speech-bubble {
-  font-size: 17px;
+.tail-bottom::after {
+  bottom: -17px;
 }
-.guide-badge {
-  width: 30px;
-  height: 30px;
-  font-size: 17px;
+.tail-bottom::before {
+  border-top-color: #efd7a5;
 }
-.guide-image {
-  border-width: 4px;
+.tail-bottom::after {
+  border-top-color: var(--paper);
 }
 
-@media (min-width: 961px) {
-  .guide-game {
-    position: fixed;
-    z-index: 30;
-    top: calc(var(--topbar-height) + 12px);
-    right: calc((100vw - var(--app-width)) / 2);
-    width: auto;
-    margin: 0;
-    --guide-size: 88px;
-    --bubble-max: 160px;
-  }
-  .guide-game .speech-bubble {
-    font-size: 17px;
-  }
-  .guide-game .guide-badge {
-    width: 34px;
-    height: 34px;
-    font-size: 20px;
-  }
-  .market-app .shopping-sidebar {
-    margin-top: calc(var(--guide-size, 88px) - 4px);
+/* Game guide. Nothing here blocks a touch: products under Inti or his bubble
+   stay clickable. The page keeps room below so they can be scrolled into view. */
+.guide-corner {
+  position: fixed;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.guide-corner.side-right {
+  right: 0;
+  align-items: flex-end;
+}
+.guide-corner .speech-bubble {
+  --bubble-max: min(280px, 66vw);
+  margin: 0 calc(var(--inti-height) * 0.3) 0 12px;
+  font-size: 18px;
+}
+.side-right .tail-bottom::before,
+.side-right .tail-bottom::after {
+  right: 40px;
+}
+.guide-portrait-frame {
+  transition: transform 450ms cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.side-right .guide-portrait-frame {
+  transform-origin: 100% 100%;
+}
+/* Phones: once he has said it, he steps back; the bubble stays readable. */
+@media (max-width: 720px) {
+  .guide-corner.is-settled .guide-portrait-frame {
+    transform: translateY(30%) scale(0.7);
   }
 }
+/* Without a balloon he stays on screen, a bit smaller; a tap repeats it. */
+.guide-corner.is-peeking .guide-portrait-frame {
+  transform: scale(0.86);
+  pointer-events: auto;
+  cursor: pointer;
+}
+@media (max-width: 720px) {
+  .guide-corner.is-peeking .guide-portrait-frame {
+    transform: translateY(40%) scale(0.62);
+  }
+}
+.market-app.with-inti {
+  padding-bottom: calc(var(--inti-height, 160px) * 0.75);
+}
 @media (min-width: 1201px) {
-  .guide-game {
-    --guide-size: 104px;
-    --bubble-max: 190px;
-  }
-  .guide-game .speech-bubble {
-    font-size: 19px;
-  }
-  .guide-game .guide-badge {
-    width: 38px;
-    height: 38px;
+  .guide-corner .speech-bubble {
+    --bubble-max: 320px;
     font-size: 22px;
   }
 }
-@media (min-width: 1701px) {
-  :root {
-    --app-width: min(1440px, calc(100vw - 48px));
-  }
-  .guide-game {
-    --bubble-max: 240px;
-  }
-}
-/* Mood animations (transform/opacity only). */
+
 @keyframes guide-bubble-in {
   from {
     opacity: 0;
-    transform: translateX(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
-}
-@keyframes guide-wave {
-  0%,
-  100% {
-    transform: rotate(0);
-  }
-  25% {
-    transform: rotate(-8deg);
-  }
-  75% {
-    transform: rotate(8deg);
-  }
-}
-@keyframes guide-jump {
-  50% {
-    transform: translateY(-6px);
-  }
-}
-@keyframes guide-lean {
-  to {
-    transform: rotate(4deg);
-  }
-}
-@keyframes guide-bounce {
-  50% {
-    transform: translateY(-5px);
-  }
-}
-.guide-figure[data-mood='greet'] .guide-badge {
-  animation: guide-wave 600ms ease-in-out 2;
-}
-.guide-figure[data-mood='celebrate'] {
-  animation: guide-jump 300ms ease-out 1;
-}
-.guide-figure[data-mood='encourage'],
-.guide-figure[data-mood='think'] {
-  animation: guide-lean 300ms ease-out forwards;
-}
-.guide-figure[data-mood='point'] .guide-badge {
-  animation: guide-bounce 400ms ease-in-out 2;
 }

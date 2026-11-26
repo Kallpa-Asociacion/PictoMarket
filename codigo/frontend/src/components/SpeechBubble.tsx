@@ -5,7 +5,7 @@ import './guide.css';
 
 interface Props {
   line: GuideLine;
-  tail: 'right' | 'top' | 'left';
+  tail: 'right' | 'top' | 'left' | 'bottom';
   /** Live bubbles are the screen-reader region; in-game ones are hidden. */
   live?: boolean;
   /** Replays the line; turns voice on first if it is off. */

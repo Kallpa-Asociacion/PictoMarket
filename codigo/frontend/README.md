@@ -217,3 +217,9 @@ Las frases del juego están en `src/domain/dialogue.ts` y las de la presentació
 ### Comportamiento
 
 Con grabaciones, **«Inti (voz grabada)» es la única voz**: la del navegador no se usa ni como respaldo, así nunca se mezclan dos voces. Al hablar por primera vez se precargan todos los audios en memoria. Si uno falla, se reintenta una vez y, si sigue fallando, se salta esa oración (el texto sigue en pantalla). Por eso `voiceCoverage.test.ts` falla si se cambia un diálogo y no se graba. Sin ninguna grabación, la app usa la voz del navegador.
+
+## Inti animado (`src/guide/`)
+
+En el juego, Inti aparece grande abajo a la derecha. En la presentación camina junto al globo de texto (al lado, debajo o encima, según el espacio; lo calcula `tourLayout.ts` sin tapar lo que explica). Cada línea empieza con su gesto, después mueve la boca (al ritmo de la voz si está activada; si no, el tiempo que toma leerla) y termina en reposo parpadeando. La sincronía de la boca es por tiempo, no analiza el sonido. Cuando queda a la derecha se muestra en espejo para mirar hacia el contenido.
+
+No bloquea el juego: los toques lo atraviesan y la página deja espacio debajo. En el teléfono, a los pocos segundos se encoge hacia el borde. Con `prefers-reduced-motion` solo muestra el gesto, sin cambios de cara.
