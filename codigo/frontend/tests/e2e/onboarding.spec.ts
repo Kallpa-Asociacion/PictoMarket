@@ -170,7 +170,7 @@ for (const [width, height] of [
   [375, 812],
   [320, 700],
 ] as const) {
-  test(`el guía no tapa productos ni controles a ${width}×${height}`, async ({
+  test(`Inti asoma abajo sin estorbar a ${width}×${height}`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height });
@@ -178,9 +178,8 @@ for (const [width, height] of [
     await waitForImages(page);
     await mkdir('artifacts', { recursive: true });
     const guide = page.locator(
-      '.guide-mascot .speech-bubble, .guide-mascot .guide-portrait-frame',
+      '.guide-mascot .speech-bubble, .guide-mascot .inti-figure',
     );
-    // Check the greeting, then the longest bubble (idle/hint) as well.
     for (const phase of ['greeting', 'hint']) {
       if (phase === 'hint') {
         await page.locator('[data-product-id="2699"]').click();
@@ -189,27 +188,63 @@ for (const [width, height] of [
           HINT_MOOD,
         );
       }
-      await page.screenshot({
-        path: `artifacts/game-${width}-${phase}.png`,
-        fullPage: true,
-      });
-      // Clicking may scroll the page; the guide is fixed, so measure at the top.
       await page.evaluate(() => window.scrollTo(0, 0));
-      const guideBoxes = await boxes(guide);
-      expect(guideBoxes).toHaveLength(2);
-      const blocked = await boxes(
-        page.locator(
-          '[data-product-id], .speaker-button, .instruction-board, .shopping-sidebar, .topbar, .voice-panel',
-        ),
+      await page.waitForTimeout(700); // entrance movement
+      await page.screenshot({ path: `artifacts/inti-${width}-${phase}.png` });
+      // He stands on the bottom edge, in one corner, fully on screen.
+      const figure = (await page.locator('.inti-figure').boundingBox())!;
+      expect(Math.abs(figure.y + figure.height - height)).toBeLessThan(24);
+      // The wave tilts the (partly transparent) canvas a few pixels.
+      expect(figure.x).toBeGreaterThanOrEqual(-10);
+      expect(figure.x + figure.width).toBeLessThanOrEqual(width + 10);
+      const side = await page
+        .locator('.guide-mascot')
+        .evaluate((el) => (el.className.includes('side-left') ? 'l' : 'r'));
+      expect(figure.x + figure.width / 2 < width / 2).toBe(side === 'l');
+      // The instruction board and its voice button stay clear.
+      const controls = await boxes(
+        page.locator('.instruction-board, .speaker-button, .topbar'),
       );
-      for (const g of guideBoxes)
-        for (const other of blocked) expect(intersects(g, other)).toBe(false);
+      for (const part of await boxes(guide))
+        for (const control of controls)
+          expect(intersects(part, control)).toBe(false);
+      // Touches go through him and his bubble.
+      const blocked = await page.evaluate(() =>
+        Array.from(
+          document.querySelectorAll(
+            '.guide-mascot .speech-bubble, .guide-mascot .inti-figure',
+          ),
+        ).some((el) => {
+          const r = el.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            r.x + r.width / 2,
+            r.y + r.height / 2,
+          );
+          return Boolean(hit?.closest('.guide-mascot'));
+        }),
+      );
+      expect(blocked).toBe(false);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
     }
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
+    // A pointed product can be brought fully clear of him.
+    const hinted = page.locator('.category-hint, .target-hint').first();
+    if (await hinted.count()) {
+      await hinted.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+      await page.waitForTimeout(300);
+      const card = (await hinted.boundingBox())!;
+      const figure = (await page.locator('.inti-figure').boundingBox())!;
+      // Only the drawn part counts: the sides of the canvas are empty.
+      const drawn = {
+        ...figure,
+        x: figure.x + figure.width * 0.12,
+        width: figure.width * 0.76,
+      };
+      expect(intersects(drawn, card)).toBe(false);
+    }
   });
 }
 

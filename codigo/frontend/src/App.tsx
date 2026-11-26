@@ -226,14 +226,22 @@ export default function App() {
         {skip.label}
       </a>
       {screen === 'game' ? (
-        <div className="market-app" inert={guiding && !touchable}>
+        <div className="market-app with-inti" inert={guiding && !touchable}>
           <Header
             challenge={challenge}
             goHome={goHome}
             showGuide={replayTour}
             sound={sound}
           />
-          {!guiding && <GuideMascot line={gameLine} />}
+          {!guiding && (
+            <GuideMascot
+              line={gameLine}
+              speaking={speech.snapshot.speaking}
+              // The idle nudge is only visual: the voice does not read it.
+              voiceOn={speech.snapshot.settings.enabled && !idle}
+              complete={state.items_restantes.length === 0}
+            />
+          )}
           <main className="market-layout">
             <MarketStall
               state={state}

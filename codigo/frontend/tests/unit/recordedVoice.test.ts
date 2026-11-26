@@ -12,13 +12,7 @@ const browserVoice = {
   localService: true,
 };
 class NativeUtterance {
-  onstart: (() => void) | null = null;
-  onend: (() => void) | null = null;
-  onerror: ((event: { error: string }) => void) | null = null;
   voice: unknown = null;
-  lang = '';
-  volume = 1;
-  rate = 1;
   constructor(public text: string) {}
 }
 class FakeAudio {
@@ -28,24 +22,36 @@ class FakeAudio {
   onended: (() => void) | null = null;
   onerror: (() => void) | null = null;
   played: string[] = [];
-  failWith: string | null = null;
+  /** File names that fail, with the number of times they still will. */
+  failing: Record<string, number> = {};
+  blocked = false;
   play = vi.fn(() => {
-    if (this.failWith) {
-      const error = new Error('play');
-      error.name = this.failWith;
+    const file = this.src.split('/').pop()!;
+    const error = new Error('play');
+    if (this.blocked) {
+      error.name = 'NotAllowedError';
+      return Promise.reject(error);
+    }
+    if (this.failing[file] > 0) {
+      this.failing[file]--;
+      error.name = 'NotSupportedError';
       return Promise.reject(error);
     }
     this.played.push(this.src);
     return Promise.resolve();
   });
+  load = vi.fn();
   pause = vi.fn();
 }
 const CLIPS = { '¡muy bien!': 'a.mp3', 'busca: papa.': 'b.mp3' };
 
-function setup(clips: Record<string, string> = CLIPS, voices = [browserVoice]) {
+function setup(
+  clips: Record<string, string> = CLIPS,
+  options: { preload?: (url: string) => Promise<string> } = {},
+) {
   const audio = new FakeAudio();
   const base = {
-    getVoices: vi.fn(() => voices),
+    getVoices: vi.fn(() => [browserVoice]),
     speak: vi.fn(),
     cancel: vi.fn(),
     addEventListener: vi.fn(),
@@ -57,6 +63,7 @@ function setup(clips: Record<string, string> = CLIPS, voices = [browserVoice]) {
     clips,
     urlFor: (file) => `/audio/inti/${file}`,
     createAudio: () => audio as unknown as HTMLAudioElement,
+    preload: options.preload ?? null,
   });
   const statuses: string[] = [];
   const controller = createSpeechController({
@@ -68,6 +75,18 @@ function setup(clips: Record<string, string> = CLIPS, voices = [browserVoice]) {
   return { audio, base, voice, controller, statuses };
 }
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+async function say(context: ReturnType<typeof setup>, text: string, id = '1') {
+  context.controller.update({ id, text });
+  context.controller.enable();
+  await flush();
+}
+/** Lets every queued clip finish. */
+async function finish(audio: FakeAudio) {
+  for (let i = 0; i < 6; i++) {
+    audio.onended?.();
+    await flush();
+  }
+}
 
 describe('voz grabada de Inti', () => {
   it('sin grabaciones deja la voz del navegador como estaba', () => {
@@ -76,89 +95,116 @@ describe('voz grabada de Inti', () => {
     expect(voice.Utterance).toBe(NativeUtterance);
     expect(voice.recorded).toBe(false);
   });
-  it('reproduce las oraciones grabadas en orden, sin usar el navegador', async () => {
-    const { audio, base, controller, statuses } = setup();
-    controller.update({ id: '1', text: '¡muy bien! busca: papa.' });
-    controller.enable();
-    await flush();
+  it('con grabaciones solo ofrece la voz de Inti', () => {
+    const { voice } = setup();
+    expect(voice.synth!.getVoices().map((v) => v.voiceURI)).toEqual([
+      RECORDED_VOICE_URI,
+    ]);
+  });
+  it('reproduce las oraciones grabadas en orden', async () => {
+    const context = setup();
+    const { audio, controller, statuses } = context;
+    await say(context, '¡muy bien! busca: papa.');
     expect(controller.snapshot().speaking).toBe(true);
-    expect(audio.played).toEqual(['/audio/inti/a.mp3']);
-    audio.onended!();
-    await flush();
+    await finish(audio);
     expect(audio.played).toEqual(['/audio/inti/a.mp3', '/audio/inti/b.mp3']);
-    audio.onended!();
     expect(controller.snapshot().speaking).toBe(false);
     expect(statuses).toContain('ended');
-    expect(base.speak).not.toHaveBeenCalled();
   });
   it('respeta volumen y velocidad (la velocidad por defecto es natural)', async () => {
-    const { audio, controller } = setup();
-    controller.configure({ volume: 0.4, voiceURI: RECORDED_VOICE_URI });
-    controller.update({ id: '1', text: '¡muy bien!' });
-    controller.enable();
-    await flush();
-    expect(audio.volume).toBeCloseTo(0.4);
-    expect(audio.playbackRate).toBeCloseTo(1);
+    const context = setup();
+    context.controller.configure({
+      volume: 0.4,
+      voiceURI: RECORDED_VOICE_URI,
+    });
+    await say(context, '¡muy bien!');
+    expect(context.audio.volume).toBeCloseTo(0.4);
+    expect(context.audio.playbackRate).toBeCloseTo(1);
   });
-  it('si falta una grabación, todo el mensaje lo dice el navegador', () => {
-    const { audio, base, controller } = setup();
-    controller.update({ id: '1', text: '¡muy bien! frase sin grabar.' });
-    controller.enable();
-    expect(audio.play).not.toHaveBeenCalled();
-    const sent = base.speak.mock.calls[0][0] as NativeUtterance;
-    expect(sent).toBeInstanceOf(NativeUtterance);
-    expect(sent.text).toBe('¡muy bien! frase sin grabar.');
-    expect(sent.voice).toBe(browserVoice);
-    sent.onstart!();
-    expect(controller.snapshot().status.code).toBe('speaking');
-    sent.onend!();
-    expect(controller.snapshot().status.code).toBe('ended');
+
+  describe('la voz del navegador no suena nunca', () => {
+    it('una frase sin grabar se salta y se oyen las demás', async () => {
+      const context = setup();
+      await say(context, '¡muy bien! frase sin grabar. busca: papa.');
+      await finish(context.audio);
+      expect(context.audio.played).toEqual([
+        '/audio/inti/a.mp3',
+        '/audio/inti/b.mp3',
+      ]);
+      expect(context.base.speak).not.toHaveBeenCalled();
+    });
+    it('un audio que falla se reintenta una vez', async () => {
+      const context = setup();
+      context.audio.failing['a.mp3'] = 1;
+      await say(context, '¡muy bien! busca: papa.');
+      await finish(context.audio);
+      expect(context.audio.played).toEqual([
+        '/audio/inti/a.mp3',
+        '/audio/inti/b.mp3',
+      ]);
+      expect(context.base.speak).not.toHaveBeenCalled();
+    });
+    it('si sigue fallando, continúa con la siguiente frase', async () => {
+      const context = setup();
+      context.audio.failing['a.mp3'] = 9;
+      await say(context, '¡muy bien! busca: papa.');
+      await finish(context.audio);
+      expect(context.audio.played).toEqual(['/audio/inti/b.mp3']);
+      expect(context.statuses).toContain('speaking');
+      expect(context.base.speak).not.toHaveBeenCalled();
+    });
+    it('si no se puede oír nada, lo informa como error', async () => {
+      const context = setup();
+      await say(context, 'frase sin grabar.');
+      expect(context.controller.snapshot().status.code).toBe('error');
+      expect(context.base.speak).not.toHaveBeenCalled();
+    });
+    it('aunque se pida una voz del navegador, habla Inti', async () => {
+      const context = setup();
+      context.controller.configure({ voiceURI: 'local' });
+      await say(context, '¡muy bien!');
+      expect(context.audio.played).toHaveLength(1);
+      expect(context.base.speak).not.toHaveBeenCalled();
+    });
   });
-  it('si un archivo falla, continúa con la voz del navegador desde esa oración', async () => {
-    const { audio, base, controller } = setup();
-    controller.update({ id: '1', text: '¡muy bien! busca: papa.' });
-    controller.enable();
-    await flush();
-    audio.failWith = 'NotSupportedError';
-    audio.onended!();
-    await flush();
-    expect((base.speak.mock.calls[0][0] as NativeUtterance).text).toBe(
-      'busca: papa.',
-    );
+
+  describe('precarga', () => {
+    it('al hablar por primera vez descarga todo y usa la copia local', async () => {
+      const preload = vi.fn(async (url: string) => `blob:${url}`);
+      const context = setup(CLIPS, { preload });
+      expect(preload).not.toHaveBeenCalled(); // no data use until asked
+      await say(context, '¡muy bien!', '1');
+      expect(preload).toHaveBeenCalledTimes(2);
+      await finish(context.audio);
+      context.controller.update({ id: '2', text: 'busca: papa.' });
+      await flush();
+      expect(context.audio.played.at(-1)).toBe('blob:/audio/inti/b.mp3');
+      expect(preload).toHaveBeenCalledTimes(2);
+    });
+    it('si la precarga falla, usa la dirección normal', async () => {
+      const preload = vi.fn(async () => {
+        throw new Error('offline');
+      });
+      const context = setup(CLIPS, { preload });
+      await say(context, '¡muy bien!');
+      expect(context.audio.played).toEqual(['/audio/inti/a.mp3']);
+    });
   });
+
   it('si el navegador bloquea el audio, lo informa como bloqueado', async () => {
-    const { audio, controller } = setup();
-    audio.failWith = 'NotAllowedError';
-    controller.update({ id: '1', text: '¡muy bien!' });
-    controller.enable();
-    await flush();
-    expect(controller.snapshot().status.code).toBe('blocked');
+    const context = setup();
+    context.audio.blocked = true;
+    await say(context, '¡muy bien!');
+    expect(context.controller.snapshot().status.code).toBe('blocked');
   });
   it('detener corta el audio y no sigue con la siguiente oración', async () => {
-    const { audio, controller } = setup();
-    controller.update({ id: '1', text: '¡muy bien! busca: papa.' });
-    controller.enable();
-    await flush();
-    const resume = audio.onended!;
-    controller.stop();
-    expect(audio.pause).toHaveBeenCalled();
+    const context = setup();
+    await say(context, '¡muy bien! busca: papa.');
+    const resume = context.audio.onended!;
+    context.controller.stop();
+    expect(context.audio.pause).toHaveBeenCalled();
     resume();
     await flush();
-    expect(audio.played).toHaveLength(1);
-  });
-  it('funciona en un dispositivo sin voces en español', async () => {
-    const { audio, controller } = setup(CLIPS, []);
-    controller.update({ id: '1', text: '¡muy bien!' });
-    controller.enable();
-    await flush();
-    expect(audio.played).toHaveLength(1);
-  });
-  it('si se elige una voz del navegador, no usa las grabaciones', () => {
-    const { audio, base, controller } = setup();
-    controller.configure({ voiceURI: 'local' });
-    controller.update({ id: '1', text: '¡muy bien!' });
-    controller.enable();
-    expect(base.speak).toHaveBeenCalledTimes(1);
-    expect(audio.play).not.toHaveBeenCalled();
+    expect(context.audio.played).toHaveLength(1);
   });
 });

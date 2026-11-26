@@ -59,3 +59,20 @@ Las palabras de función de la consulta del agente (`BUSCAR + PRODUCTO`, pistas,
 - **Nunito**, Google Fonts, fuentes locales 700 y 900. Licencia **SIL Open Font License 1.1**, incluida en `fonts/OFL.txt`. Fuente: <https://github.com/google/fonts/tree/main/ofl/nunito>.
 - **Lucide**, iconos SVG a través de `lucide-react`, licencia ISC: <https://lucide.dev/license>.
 - Las monedas son dibujos CSS y los emojis decorativos dependen del sistema operativo.
+
+## Inti animado (`public/art/inti/`)
+
+Ilustraciones del personaje proporcionadas por el equipo del proyecto. Se alinearon a un mismo lienzo (642 × 521 px) tomando como base la pose «habla abierta», se les quitó el fondo cuando venía pintado y se exportaron en WebP.
+
+| Archivo | Uso |
+|---|---|
+| `reposo`, `habla-media`, `habla-abierta`, `parpadeo` | Hablar, callar y parpadear (mismo cuerpo, cambia la cara) |
+| `saludo` | Inicio |
+| `senala` | Explicar un elemento de la pantalla |
+| `sorpresa` | Explicar sin señalar |
+| `piensa` | Pista |
+| `animo` | Después de un error (no se usa ninguna cara de enojo) |
+| `pulgar` | Acierto |
+| `celebra` | Compra completa |
+
+Una pose nueva debe usar el mismo lienzo y encuadre para que el personaje no salte.
