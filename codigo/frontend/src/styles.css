@@ -27,8 +27,6 @@
 body {
   margin: 0;
   min-width: 320px;
-  height: 100svh;
-  overflow: hidden;
   background: #d7bd91 url('/art/market.webp') center top / cover fixed no-repeat;
 }
 body::before {
@@ -99,10 +97,8 @@ svg {
   width: min(1320px, calc(100% - 48px));
   margin: 0 auto;
   padding-bottom: 0;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 .topbar {
   display: flex;
@@ -197,15 +193,10 @@ svg {
   grid-template-columns: minmax(0, 2.75fr) minmax(270px, 1fr);
   gap: 20px;
   align-items: start;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
 }
 .market-stall {
   min-width: 0;
   scroll-margin-top: 20px;
-  overflow-y: auto;
-  height: 100%;
 }
 .instruction-board {
   display: flex;
@@ -520,8 +511,6 @@ svg {
   border-radius: 28px;
   box-shadow: 0 8px 18px #72462725;
   border: 1px solid #fae8c6;
-  height: 100%;
-  overflow-y: auto;
 }
 .paper-panel {
   background: linear-gradient(135deg, #fffdf7, #fcf7ec);
