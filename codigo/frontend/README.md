@@ -31,7 +31,7 @@ Implementación con componentes React basada en **`img/ui.png`**, usando **`img/
 
 - Pantalla de bienvenida anterior al juego, inspirada en la referencia de inicio: cartel, toldo, guía, carrito y botón amarillo **Empezar**.
 - Presentación guiada sobre la propia pantalla de juego: Inti se desplaza con animación hasta la lista, los productos, la pizarra y la billetera, con su diálogo, mientras el resto de la pantalla se oscurece. Se muestra sola la primera vez (`localStorage` `pictomarket.intro.seen`) y se repite desde el panel del terapeuta («Ver presentación otra vez») sin perder la compra.
-- Guía Inti en la esquina superior derecha durante el juego, con nube corta que reacciona a aciertos y pistas (a1/a2/a3) y ofrece ayuda tras 15 s de inactividad. No altera el estado del juego ni el registro de eventos.
+- Guía Inti abajo a la derecha durante el juego, con nube corta que reacciona a aciertos y pistas (a1/a2/a3) y ofrece ayuda tras 15 s de inactividad. No altera el estado del juego ni el registro de eventos.
 - Acceso al panel del terapeuta desde la bienvenida para configurar el escenario sin iniciar la compra.
 - Cabecera PictoMarket, objetivo pictográfico durante la compra y logotipo de la referencia.
 - Guía sobre un letrero de madera, con instrucción real y botón para escuchar.
@@ -220,6 +220,6 @@ Con grabaciones, **«Inti (voz grabada)» es la única voz**: la del navegador n
 
 ## Inti animado (`src/guide/`)
 
-En el juego, Inti aparece grande abajo a la derecha. En la presentación camina junto al globo de texto (al lado, debajo o encima, según el espacio; lo calcula `tourLayout.ts` sin tapar lo que explica). Cada línea empieza con su gesto, después mueve la boca (al ritmo de la voz si está activada; si no, el tiempo que toma leerla) y termina en reposo parpadeando. La sincronía de la boca es por tiempo, no analiza el sonido. Cuando queda a la derecha se muestra en espejo para mirar hacia el contenido.
+En el juego, Inti aparece grande abajo a la derecha; en pantallas anchas ajusta su alto (mínimo 180 px) para que ni él ni su globo tapen «Mi lista», y no agrega scroll a la página. Al entrar puede quedar sobre la billetera o el carrito; al bajar se ven completos y los toques lo atraviesan. En la presentación camina junto al globo de texto (al lado, debajo o encima, según el espacio; lo calcula `tourLayout.ts` sin tapar lo que explica). Cada línea empieza con su gesto, después mueve la boca (al ritmo de la voz si está activada; si no, el tiempo que toma leerla) y termina en reposo parpadeando. La sincronía de la boca es por tiempo, no analiza el sonido. Cuando queda a la derecha se muestra en espejo para mirar hacia el contenido.
 
 No bloquea el juego: los toques lo atraviesan y la página deja espacio debajo. En el teléfono, a los pocos segundos se encoge hacia el borde. Con `prefers-reduced-motion` solo muestra el gesto, sin cambios de cara.
