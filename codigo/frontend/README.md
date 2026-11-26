@@ -216,4 +216,4 @@ Las frases del juego están en `src/domain/dialogue.ts` y las de la presentació
 
 ### Comportamiento
 
-Si falta la grabación de alguna oración, **todo el mensaje** lo lee la voz del navegador (para no mezclar dos voces). Sin grabaciones, la app funciona como antes. Con grabaciones aparece «Inti (voz grabada)» como voz predeterminada en *Ajustes de voz*, incluso en equipos sin voces en español.
+Con grabaciones, **«Inti (voz grabada)» es la única voz**: la del navegador no se usa ni como respaldo, así nunca se mezclan dos voces. Al hablar por primera vez se precargan todos los audios en memoria. Si uno falla, se reintenta una vez y, si sigue fallando, se salta esa oración (el texto sigue en pantalla). Por eso `voiceCoverage.test.ts` falla si se cambia un diálogo y no se graba. Sin ninguna grabación, la app usa la voz del navegador.

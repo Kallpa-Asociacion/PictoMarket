@@ -116,8 +116,7 @@ export function VoiceControls({ speech }: { speech: SpeechSupport }) {
         </div>
         <p className="fine-print">
           Sin micrófono. La voz «Inti (voz grabada)» son grabaciones incluidas
-          en la aplicación. Las voces «en línea» pueden utilizar servicios del
-          navegador y necesitan internet.
+          en la aplicación; no usa las voces del navegador.
         </p>
       </details>
     </section>

@@ -1,9 +1,9 @@
 // Inti's recorded voice. It offers the same interface as speechSynthesis, so
-// the speech controller does not know whether a message is played from
-// recordings or read by the browser. Nothing here calls any online service:
-// the clips are recorded once with scripts/generate-voice.mjs.
+// the speech controller does not need to know where the sound comes from.
+// With recordings, Inti is the ONLY voice: the browser voice is never used as a
+// fallback, so two different voices are never heard. Nothing here calls any
+// online service: the clips are recorded once with scripts/generate-voice.mjs.
 
-import { spanishVoices } from '../audio/speech-controller.mjs';
 import { splitSentences } from './sentences';
 
 export const RECORDED_VOICE_URI = 'inti-recorded';
@@ -36,7 +36,18 @@ interface Options {
   clips: Record<string, string>;
   urlFor: (file: string) => string;
   createAudio?: () => HTMLAudioElement;
+  /** Downloads a clip and returns a local address for it; null disables it. */
+  preload?: ((url: string) => Promise<string>) | null;
 }
+
+const downloadClip =
+  typeof fetch === 'function' && typeof URL.createObjectURL === 'function'
+    ? async (url: string) => {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return URL.createObjectURL(await response.blob());
+      }
+    : null;
 
 export function createRecordedVoice({
   base,
@@ -44,6 +55,7 @@ export function createRecordedVoice({
   clips,
   urlFor,
   createAudio = () => new Audio(),
+  preload = downloadClip,
 }: Options) {
   if (!Object.keys(clips).length || typeof Audio === 'undefined')
     return { recorded: false, synth: base, Utterance };
@@ -53,60 +65,63 @@ export function createRecordedVoice({
   let audio: HTMLAudioElement | null = null;
   let turn = 0;
 
-  /** Reads `text` with a browser voice, reporting to the same utterance. */
-  function readWithBrowser(
-    utterance: RecordedUtterance,
-    text: string,
-    voice: SpeechSynthesisVoice | undefined,
-  ) {
-    if (!base || !Utterance || !voice) {
-      utterance.onerror?.({ error: 'synthesis-failed' });
-      return;
-    }
-    const native = new Utterance(text);
-    native.voice = voice;
-    native.lang = voice.lang;
-    native.volume = utterance.volume;
-    native.rate = utterance.rate;
-    native.onstart = () => utterance.onstart?.();
-    native.onend = () => utterance.onend?.();
-    native.onerror = (event) => utterance.onerror?.({ error: event.error });
-    base.speak(native);
+  // The first time Inti speaks, every clip is downloaded in the background so
+  // a slow or lost connection cannot silence him in the middle of a game.
+  const local = new Map<string, string>();
+  let preloading = false;
+  function preloadAll() {
+    if (!preload || preloading) return;
+    preloading = true;
+    const pending = Object.values(clips);
+    const worker = async () => {
+      for (let file = pending.shift(); file; file = pending.shift()) {
+        try {
+          local.set(file, await preload(urlFor(file)));
+        } catch {
+          // It is still played from its normal address.
+        }
+      }
+    };
+    for (let i = 0; i < 4; i++) void worker();
   }
 
-  function playClips(utterance: RecordedUtterance, sentences: string[]) {
+  function playClips(utterance: RecordedUtterance, files: string[]) {
     const current = ++turn;
     const player = (audio ??= createAudio());
-    const fallbackFrom = (index: number) => {
+    let started = false;
+    const play = (index: number, retried = false) => {
       if (current !== turn) return;
-      turn++;
-      player.pause();
-      readWithBrowser(
-        utterance,
-        sentences.slice(index).join(' '),
-        base ? spanishVoices(base)[0] : undefined,
-      );
-    };
-    const play = (index: number) => {
-      if (current !== turn) return;
-      if (index >= sentences.length) {
-        utterance.onend?.();
+      if (index >= files.length) {
+        if (started) utterance.onend?.();
+        else utterance.onerror?.({ error: 'synthesis-failed' });
         return;
       }
-      player.src = urlFor(clips[sentences[index]]);
+      let failed = false;
+      // Retry a clip once from the network; then go on with the next one.
+      const recover = () => {
+        if (current !== turn || failed) return;
+        failed = true;
+        local.delete(files[index]);
+        if (retried) play(index + 1);
+        else play(index, true);
+      };
+      player.src = local.get(files[index]) ?? urlFor(files[index]);
+      if (retried) player.load?.();
       player.volume = utterance.volume;
       player.playbackRate = utterance.rate / NATURAL_RATE;
       player.onended = () => play(index + 1);
-      player.onerror = () => fallbackFrom(index);
+      player.onerror = recover;
       Promise.resolve(player.play()).then(
         () => {
-          if (current === turn && index === 0) utterance.onstart?.();
+          if (current !== turn || started) return;
+          started = true;
+          utterance.onstart?.();
         },
         (error: Error) => {
           if (current !== turn) return;
           if (error.name === 'NotAllowedError')
             utterance.onerror?.({ error: 'not-allowed' });
-          else fallbackFrom(index);
+          else recover();
         },
       );
     };
@@ -114,35 +129,22 @@ export function createRecordedVoice({
   }
 
   const synth = {
-    getVoices: () => [recordedVoice, ...(base?.getVoices() ?? [])],
+    getVoices: () => [recordedVoice],
     speak(value: SpeechSynthesisUtterance) {
       const utterance = value as unknown as RecordedUtterance;
-      const chosen = utterance.voice;
-      if (chosen && chosen.voiceURI !== RECORDED_VOICE_URI) {
-        readWithBrowser(utterance, utterance.text, chosen);
-        return;
-      }
-      const sentences = splitSentences(utterance.text);
-      if (sentences.every((sentence) => sentence in clips))
-        playClips(utterance, sentences);
-      else
-        readWithBrowser(
-          utterance,
-          utterance.text,
-          base ? spanishVoices(base)[0] : undefined,
-        );
+      // A sentence without recording is skipped (it stays on screen).
+      const files = splitSentences(utterance.text)
+        .map((sentence) => clips[sentence])
+        .filter(Boolean);
+      playClips(utterance, files);
+      preloadAll();
     },
     cancel() {
       turn++;
       audio?.pause();
-      base?.cancel();
     },
-    addEventListener: (
-      ...args: Parameters<SpeechSynthesis['addEventListener']>
-    ) => base?.addEventListener(...args),
-    removeEventListener: (
-      ...args: Parameters<SpeechSynthesis['removeEventListener']>
-    ) => base?.removeEventListener(...args),
+    addEventListener: () => {},
+    removeEventListener: () => {},
   } as unknown as SpeechSynthesis;
 
   return {
