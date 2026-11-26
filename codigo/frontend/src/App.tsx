@@ -226,7 +226,7 @@ export default function App() {
         {skip.label}
       </a>
       {screen === 'game' ? (
-        <div className="market-app with-inti" inert={guiding && !touchable}>
+        <div className="market-app" inert={guiding && !touchable}>
           <Header
             challenge={challenge}
             goHome={goHome}

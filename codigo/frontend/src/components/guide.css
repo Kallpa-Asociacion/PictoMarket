@@ -115,9 +115,13 @@
   right: 0;
   align-items: flex-end;
 }
+/* As big as --inti-height, but never taller than the room under the list. */
+.guide-corner .inti-figure {
+  height: min(var(--inti-height), var(--inti-room, 100vh));
+}
 .guide-corner .speech-bubble {
   --bubble-max: min(280px, 66vw);
-  margin: 0 calc(var(--inti-height) * 0.3) 0 12px;
+  margin: 0 calc(min(var(--inti-height), var(--inti-room, 100vh)) * 0.3) 0 12px;
   font-size: 18px;
 }
 .side-right .tail-bottom::before,
@@ -146,9 +150,6 @@
   .guide-corner.is-peeking .guide-portrait-frame {
     transform: translateY(40%) scale(0.62);
   }
-}
-.market-app.with-inti {
-  padding-bottom: calc(var(--inti-height, 160px) * 0.75);
 }
 @media (min-width: 1201px) {
   .guide-corner .speech-bubble {
