@@ -27,7 +27,8 @@
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
+  height: 100svh;
+  overflow: hidden;
   background: #d7bd91 url('/art/market.webp') center top / cover fixed no-repeat;
 }
 body::before {
@@ -97,19 +98,24 @@ svg {
 .market-app {
   width: min(1320px, calc(100% - 48px));
   margin: 0 auto;
-  padding-bottom: 12px;
+  padding-bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .topbar {
   display: flex;
   align-items: center;
-  gap: 28px;
-  min-height: 92px;
-  padding: 14px 36px;
+  gap: 20px;
+  min-height: 72px;
+  padding: 8px 28px;
   background: linear-gradient(120deg, #fffdf5, #faf8ef);
-  border-radius: 0 0 30px 30px;
+  border-radius: 0 0 26px 26px;
   box-shadow: 0 5px 14px #624a3626;
   border: 1px solid #fffaf0;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 .brand {
   display: flex;
@@ -117,9 +123,9 @@ svg {
   gap: 8px;
   text-decoration: none;
   white-space: nowrap;
-  font-size: clamp(23px, 2.3vw, 36px);
+  font-size: clamp(20px, 2vw, 30px);
   font-weight: 1000;
-  letter-spacing: -1.8px;
+  letter-spacing: -1.5px;
   line-height: 1;
 }
 .brand-accent {
@@ -127,20 +133,20 @@ svg {
 }
 .brand-cart {
   position: relative;
-  width: 52px;
+  width: 42px;
   display: block;
   color: #2e2c3f;
 }
 .brand-cart > svg {
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
   stroke-width: 2;
 }
 .brand-cart > span {
   position: absolute;
-  font-size: 20px;
+  font-size: 17px;
   top: 2px;
-  left: 21px;
+  left: 17px;
   transform: rotate(-12deg);
 }
 .objective {
@@ -152,16 +158,17 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   border: 2px solid #eae0d7;
-  border-radius: 27px;
+  border-radius: 24px;
   background: #f2e9e1;
   color: #382045;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 1000;
-  min-height: 59px;
-  padding: 10px 20px;
+  min-height: 48px;
+  padding: 7px 16px;
   white-space: nowrap;
+  box-shadow: 0 3px 0 #d4c8bc;
 }
 .objective-chip svg {
   width: 28px;
@@ -172,7 +179,8 @@ svg {
 .primary-chip {
   background: linear-gradient(135deg, #ffe7a2, #ffd16c);
   border-color: #ffbe48;
-  box-shadow: 0 3px 5px #b7822624;
+  box-shadow: inset 0 2px 0 #fff4b088, 0 4px 0 #c07a0a, 0 5px 8px #b7822624;
+  color: #4c2a07;
 }
 .primary-chip svg {
   color: #ba5a16;
@@ -186,19 +194,24 @@ svg {
 }
 .market-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2.75fr) minmax(285px, 1fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, 2.75fr) minmax(270px, 1fr);
+  gap: 20px;
   align-items: start;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 .market-stall {
   min-width: 0;
   scroll-margin-top: 20px;
+  overflow-y: auto;
+  height: 100%;
 }
 .instruction-board {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 108px;
+  min-height: 86px;
   position: relative;
   background: linear-gradient(100deg, #e1aa63, #f8d596 45%, #d9954a);
   border: 3px solid #ce914d;
@@ -234,8 +247,8 @@ svg {
   background: linear-gradient(115deg, #fff9e8, #f8eccf);
   border: 2px solid #efd7a5;
   border-radius: 20px;
-  padding: 12px 14px 12px 23px;
-  min-height: 78px;
+  padding: 10px 14px 10px 20px;
+  min-height: 62px;
   box-shadow: 0 2px 3px #97622612;
 }
 .instruction-text {
@@ -271,16 +284,16 @@ svg {
   transform: translateY(-1px);
 }
 .storefront {
-  margin-top: 10px;
+  margin-top: 7px;
   position: relative;
-  padding-top: 72px;
+  padding-top: 56px;
 }
 .awning {
   position: absolute;
   top: 0;
   left: -8px;
   width: calc(100% + 16px);
-  height: 102px;
+  height: 82px;
   object-fit: fill;
   z-index: 1;
   filter: drop-shadow(0 5px 3px #4a2a222a);
@@ -298,8 +311,8 @@ svg {
 }
 .shelf-row {
   position: relative;
-  min-height: 192px;
-  padding: 30px 26px 14px;
+  min-height: 162px;
+  padding: 22px 26px 10px;
   background: url('/art/shelf.webp') center bottom / 100% 100% no-repeat;
   border-bottom: 9px solid #cf914b;
   box-shadow:
@@ -312,23 +325,23 @@ svg {
   left: 8px;
   z-index: 2;
   display: flex;
-  gap: 9px;
+  gap: 8px;
   align-items: center;
-  background: linear-gradient(110deg, #ffdda1, #f5c27b);
-  border: 2px solid #e5b46f;
+  background: linear-gradient(110deg, #ffe8a8, #f7c96a);
+  border: 2px solid #d4972a;
   box-shadow:
-    0 3px 0 #89572f48,
-    inset 0 2px 0 #ffebbb;
-  border-radius: 7px;
-  padding: 4px 16px;
-  color: #3e230f;
+    0 3px 0 #8a5a1e55,
+    inset 0 2px 0 #fff3cc;
+  border-radius: 8px;
+  padding: 4px 14px;
+  color: #3e200a;
   font-weight: 1000;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.25;
   letter-spacing: -0.2px;
 }
 .shelf-sign span {
-  font-size: 23px;
+  font-size: 20px;
 }
 .shelf-products {
   display: grid;
@@ -348,28 +361,33 @@ svg {
   justify-content: flex-end;
   position: relative;
   min-width: 0;
-  min-height: 140px;
+  min-height: 118px;
   background: linear-gradient(130deg, #fffdf8, #faf1df);
   border: 2px solid #e8dcc6;
   border-radius: 18px;
   color: #211c1a;
-  padding: 6px 9px 7px;
-  box-shadow: 0 4px 5px #38211230;
+  padding: 5px 8px 6px;
+  box-shadow: 0 5px 0 #c8a05a, 0 7px 10px #38211230;
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    border-color 0.15s ease;
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
 }
 .product-card:hover:not(:disabled) {
-  transform: translateY(-5px);
-  box-shadow: 0 9px 10px #38211250;
+  transform: translateY(-6px);
+  box-shadow: 0 11px 0 #c8a05a, 0 14px 16px #38211250;
   border-color: #ffa83b;
+  background: linear-gradient(130deg, #fff9ec, #fff0d0);
+}
+.product-card:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #c8a05a, 0 4px 6px #38211230;
 }
 .product-card:active:not(:disabled) {
   transform: translateY(0) scale(0.97);
 }
 .product-image {
-  height: 84px;
+  height: 70px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -496,18 +514,20 @@ svg {
 .shopping-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 13px;
-  padding: 12px;
+  gap: 8px;
+  padding: 10px;
   background: #fff5dfd9;
-  border-radius: 32px;
+  border-radius: 28px;
   box-shadow: 0 8px 18px #72462725;
   border: 1px solid #fae8c6;
+  height: 100%;
+  overflow-y: auto;
 }
 .paper-panel {
   background: linear-gradient(135deg, #fffdf7, #fcf7ec);
   border: 2px solid #eee4d0;
-  border-radius: 26px;
-  padding: 18px 19px;
+  border-radius: 22px;
+  padding: 12px 14px;
   box-shadow: 0 3px 3px #805b3220;
   min-width: 0;
 }
@@ -531,17 +551,17 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 17px;
+  margin-bottom: 10px;
 }
 .progress-counter {
-  padding: 3px 10px;
-  border-radius: 13px;
+  padding: 4px 12px;
+  border-radius: 14px;
   white-space: nowrap;
-  font-size: 17px;
-  background: #36a44c;
+  font-size: 16px;
+  background: linear-gradient(135deg, #38b84f, #2a9640);
   color: #fff;
   font-weight: 1000;
-  box-shadow: inset 0 2px 3px #ffffff33;
+  box-shadow: inset 0 2px 0 #72e08855, 0 3px 0 #1a6a2a, 0 4px 6px #1a6a2a33;
 }
 .shopping-list {
   display: grid;
@@ -555,20 +575,20 @@ svg {
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 5px;
-  min-height: 116px;
+  gap: 4px;
+  min-height: 96px;
   min-width: 0;
   background: #f3faed;
   border: 2px solid #beddb6;
   border-radius: 13px;
-  padding: 9px 6px 7px;
+  padding: 8px 5px 6px;
   color: #252522;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.1;
   font-weight: 1000;
 }
 .list-item > .pictogram {
-  height: 65px;
+  height: 54px;
 }
 .list-item.current {
   border-color: #34b446;
@@ -576,6 +596,11 @@ svg {
     0 0 0 2px #6ee67b33,
     0 0 12px #37d34744;
   background: #f5ffed;
+  animation: item-glow 2s ease-in-out infinite;
+}
+@keyframes item-glow {
+  0%, 100% { box-shadow: 0 0 0 2px #6ee67b33, 0 0 12px #37d34744; }
+  50% { box-shadow: 0 0 0 4px #6ee67b55, 0 0 22px #37d34777; }
 }
 .list-item.done {
   background: #e1efda;
@@ -585,16 +610,23 @@ svg {
 }
 .now-badge {
   position: absolute;
-  top: -9px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  background: #292c31;
+  background: linear-gradient(135deg, #ff5f2e, #ff3d10);
   color: white;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 3px 10px;
   font-size: 11px;
+  font-weight: 1000;
   line-height: 1;
   white-space: nowrap;
+  box-shadow: 0 2px 6px #ff3d1055;
+  animation: badge-pop 1.4s ease-in-out infinite;
+}
+@keyframes badge-pop {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); }
 }
 .check-badge {
   position: absolute;
@@ -613,7 +645,7 @@ svg {
   height: 21px;
 }
 .wallet-panel h2 {
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .wallet-panel h2 .coin {
   width: 31px;
@@ -622,8 +654,8 @@ svg {
 .wallet-coins {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 9px;
+  gap: 4px;
+  margin-bottom: 6px;
 }
 .wallet-coins .coin {
   width: 27px;
@@ -634,7 +666,7 @@ svg {
   color: #262320;
 }
 .cart-panel h2 {
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .cart-items {
   display: grid;
@@ -687,18 +719,26 @@ svg {
   justify-content: center;
   gap: 7px;
   border: 2px solid #bba0f6;
-  border-radius: 30px;
+  border-radius: 26px;
   background: linear-gradient(120deg, #eee5ff, #e6dafe);
   color: var(--purple);
-  padding: 9px 10px;
-  min-height: 64px;
+  padding: 7px 10px;
+  min-height: 54px;
   font-size: 12px;
   box-shadow:
     inset 0 2px 0 #fff7,
-    0 2px 4px #7443ad22;
+    0 3px 0 #9b7dd4,
+    0 4px 8px #7443ad22;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 .therapist-button:hover {
-  background: #dac5ff;
+  background: linear-gradient(120deg, #e4d5ff, #d8c8fa);
+  transform: translateY(-2px);
+  box-shadow: inset 0 2px 0 #fff7, 0 5px 0 #9b7dd4, 0 6px 12px #7443ad33;
+}
+.therapist-button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 0 #fff7, 0 1px 0 #9b7dd4;
 }
 .therapist-button > svg {
   width: 22px;
@@ -1198,35 +1238,35 @@ svg {
     width: min(1440px, calc(100% - 48px));
   }
   .topbar {
-    min-height: 98px;
+    min-height: 80px;
   }
   .market-layout {
-    grid-template-columns: minmax(0, 2.7fr) minmax(330px, 1fr);
+    grid-template-columns: minmax(0, 2.7fr) minmax(310px, 1fr);
   }
   .shelf-row {
-    min-height: 210px;
+    min-height: 180px;
   }
   .product-card {
-    min-height: 157px;
+    min-height: 136px;
   }
   .product-image {
-    height: 99px;
+    height: 86px;
   }
   .product-name {
-    font-size: 16px;
-  }
-  .list-item {
-    min-height: 130px;
     font-size: 14px;
   }
+  .list-item {
+    min-height: 110px;
+    font-size: 13px;
+  }
   .list-item > .pictogram {
-    height: 76px;
+    height: 64px;
   }
   .paper-panel h2 {
-    font-size: 22px;
+    font-size: 19px;
   }
   .wallet-count {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 @media (max-width: 1200px) {
@@ -1234,77 +1274,81 @@ svg {
     width: calc(100% - 32px);
   }
   .topbar {
-    gap: 20px;
-    padding: 14px 22px;
+    gap: 14px;
+    padding: 8px 18px;
   }
   .brand {
-    font-size: 28px;
+    font-size: 24px;
   }
   .brand-cart {
-    width: 43px;
+    width: 38px;
   }
   .brand-cart > svg {
-    width: 43px;
+    width: 38px;
+    height: 38px;
   }
   .objective-chip {
-    padding: 8px 12px;
-    font-size: 14px;
-    min-height: 52px;
+    padding: 6px 10px;
+    font-size: 13px;
+    min-height: 44px;
   }
   .objective-chip svg {
-    width: 23px;
-    height: 23px;
+    width: 20px;
+    height: 20px;
   }
   .objective {
-    gap: 8px;
+    gap: 6px;
   }
   .partner-logo {
-    width: 145px;
+    width: 130px;
   }
   .market-layout {
-    gap: 18px;
-    grid-template-columns: minmax(0, 2.5fr) minmax(260px, 1fr);
+    gap: 14px;
+    grid-template-columns: minmax(0, 2.5fr) minmax(240px, 1fr);
   }
   .instruction-board {
-    padding: 9px;
+    padding: 8px;
     gap: 8px;
   }
   .instruction-paper {
-    padding: 12px 11px;
+    padding: 9px 11px;
     gap: 8px;
   }
   .instruction-text {
-    font-size: 21px;
+    font-size: 19px;
   }
   .speaker-button {
-    width: 43px;
-    height: 43px;
-    flex-basis: 43px;
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
   }
   .shopping-sidebar {
-    padding: 9px;
-    gap: 11px;
+    padding: 8px;
+    gap: 7px;
   }
   .paper-panel {
-    padding: 16px 13px;
+    padding: 11px 12px;
   }
   .paper-panel h2 {
-    font-size: 17px;
-  }
-  .shelf-row {
-    padding: 30px 20px 14px;
-  }
-  .shelf-products {
-    gap: 25px;
-  }
-  .shelf-sign {
     font-size: 15px;
   }
+  .shelf-row {
+    padding: 20px 18px 10px;
+  }
+  .shelf-products {
+    gap: 20px;
+  }
+  .shelf-sign {
+    font-size: 13px;
+  }
   .product-name {
-    font-size: 12px;
+    font-size: 11px;
   }
   .product-image {
-    height: 79px;
+    height: 64px;
+  }
+  .product-card {
+    min-height: 108px;
   }
   .therapist-button {
     font-size: 11px;
@@ -1313,10 +1357,10 @@ svg {
 @media (max-width: 960px) {
   .topbar {
     flex-wrap: wrap;
-    gap: 14px;
-    padding: 14px 24px;
-    margin-bottom: 18px;
-    border-radius: 0 0 25px 25px;
+    gap: 10px;
+    padding: 8px 18px;
+    margin-bottom: 10px;
+    border-radius: 0 0 22px 22px;
   }
   .brand {
     font-size: 32px;
@@ -1342,29 +1386,29 @@ svg {
     font-size: 20px;
   }
   .instruction-board {
-    min-height: 100px;
+    min-height: 80px;
   }
   .instruction-paper {
-    min-height: 76px;
+    min-height: 58px;
   }
   .shelf-products {
-    gap: 15px;
+    gap: 14px;
   }
   .shelf-row {
     padding-left: 12px;
     padding-right: 12px;
-    min-height: 183px;
+    min-height: 155px;
   }
   .product-name {
     font-size: 11px;
   }
   .product-card {
     border-radius: 13px;
-    min-height: 136px;
+    min-height: 118px;
     padding: 5px;
   }
   .product-image {
-    height: 76px;
+    height: 64px;
   }
   .shelf-sign {
     font-size: 13px;
@@ -1393,8 +1437,9 @@ svg {
     width: calc(100% - 24px);
   }
   .topbar {
-    padding: 12px 15px;
-    gap: 10px;
+    padding: 8px 12px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
   .brand {
     font-size: 29px;
@@ -1745,28 +1790,41 @@ svg {
 }
 
 /* Navigation back to the welcome screen. */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .home-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  min-width: 48px;
-  padding: 8px 16px;
-  border: 2px solid #e4d4b4;
-  border-radius: 24px;
-  background: #fff8e8;
-  color: #4c3827;
-  font-size: 15px;
-  font-weight: 900;
+  gap: 7px;
+  min-height: 42px;
+  min-width: 42px;
+  padding: 7px 14px;
+  border: 2px solid #d4a526;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffe97a, #ffd040 50%, #ffb820);
+  color: #4c2a07;
+  font-size: 14px;
+  font-weight: 1000;
   white-space: nowrap;
   flex-shrink: 0;
+  box-shadow: inset 0 2px 0 #fff4b088, 0 4px 0 #c07a0a, 0 5px 8px #60341a33;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 .home-button:hover {
-  background: #f7e6bc;
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #fff09a, #ffd356 55%, #ffbc40);
+  box-shadow: inset 0 2px 0 #fff4b088, 0 6px 0 #c07a0a, 0 8px 12px #60341a44;
+}
+.home-button:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 0 #fff4b088, 0 2px 0 #c07a0a;
 }
 .home-button svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 @media (max-width: 1700px) {
   .home-button {
